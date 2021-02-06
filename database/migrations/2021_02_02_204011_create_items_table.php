@@ -15,13 +15,13 @@ class CreateItemsTable extends Migration
     {
         Schema::create('items', function (Blueprint $table) {
             $table->id();
-            $table->number('store');
+            $table->unsignedbigInteger('store');
             $table->foreign('store')->references('id')->on('stores');
             $table->string('name');
             $table->float('price');
             $table->string('category');
             $table->date('add');
-            $table->number('available');
+            $table->bigInteger('available');
             $table->string('photo_path');
             $table->timestamps();
         });

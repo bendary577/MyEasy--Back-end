@@ -17,7 +17,7 @@ class CreateSellersTable extends Migration
             $table->id();
             $table->foreign('id')->references('id')->on('users');
             $table->enum('gender', ['mail', 'femail']);
-            $table->enum('specilization');
+            $table->enum('specilization', ['men', 'electric']);
             $table->date('birth');
             $table->timestamps();
         });

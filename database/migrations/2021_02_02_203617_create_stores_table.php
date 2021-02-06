@@ -15,11 +15,11 @@ class CreateStoresTable extends Migration
     {
         Schema::create('stores', function (Blueprint $table) {
             $table->id();
-            $table->number('owner');
+            $table->unsignedbigInteger('owner');
             $table->foreign('owner')->references('id')->on('users');
             $table->string('name');
             $table->date('creation');
-            $table->enum('specilization');
+            $table->enum('specilization', ['men', 'electric']);
             $table->timestamps();
         });
     }
