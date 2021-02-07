@@ -2,7 +2,7 @@
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\InvoiceController;
+
 /*
 |--------------------------------------------------------------------------
 | API Routes
@@ -18,4 +18,12 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
     return $request->user();
 });
 
-Route::get('/invoice', 'InvoiceController@invoice');
+/* User */
+
+/* Invoice */
+Route::apiResource('/company', 'CompanyController');
+Route::resource('/Customer', 'CustomerController');
+Route::resource('/invoice', 'InvoiceController');
+Route::resource('/item', 'ItemController');
+Route::resource('/seller', 'SellerController');
+Route::resource('/store', 'StoreController');
