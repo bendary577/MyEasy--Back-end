@@ -19,9 +19,10 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
 });
 
 /* User */
+Route::get('register', 'UserController@register');
 
 /* Invoice */
-Route::apiResource('/company', 'CompanyController');
+Route::resource('/company', 'CompanyController');
 Route::resource('/Customer', 'CustomerController');
 Route::resource('/invoice', 'InvoiceController');
 Route::resource('/item', 'ItemController');
