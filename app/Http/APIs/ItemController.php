@@ -20,8 +20,13 @@ class ItemController extends Controller
 
     public function store(Request $request)
     {
-        $item = Item::create($request->all());
-        return response()->json($item, 201);
+        $item = new Item;
+        $student->name = $request->name;
+        $student->course = $request->course;
+        $student->save();
+        return response()->json([
+            "message" => "item record created"
+        ], 201);
     }
 
     public function show($id)
