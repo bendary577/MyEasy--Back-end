@@ -23,8 +23,9 @@ class ItemController extends Controller
         return response()->json($item, 201);
     }
 
-    public function show(Item $item)
+    public function show($id)
     {
+        $item = Item::find($id);
         return response()-json($item, 200);
     }
 
@@ -33,14 +34,16 @@ class ItemController extends Controller
         //
     }
 
-    public function update(Request $request, Item $item)
+    public function update(Request $request, $id)
     {
+        $item = Item::find($id);
         $item->update($request->all());
 	    return response()->json($item, 200);
     }
 
-    public function destroy(Item $item)
+    public function destroy($id)
     {
+        $item = Item::find($id);
         $item->delete();
         return response()->json(null, 204);
     }

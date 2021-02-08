@@ -23,8 +23,9 @@ class InvoiceController extends Controller
         return response()->json($invoice, 201);
     }
 
-    public function show(Invoice $invoice)
+    public function show($id)
     {
+        $invoice = Invoice::find($id);
         return response()-json($invoice, 200);
     }
 
@@ -33,14 +34,16 @@ class InvoiceController extends Controller
         //
     }
 
-    public function update(Request $request, Invoice $invoice)
+    public function update(Request $request, $id)
     {
+        $invoice = Invoice::find($id);
         $invoice->update($request->all());
 	    return response()->json($invoice, 200);
     }
 
-    public function destroy(Invoice $invoice)
+    public function destroy($id)
     {
+        $invoice = Invoice::find($id);
         $invoice->delete();
         return response()->json(null, 204);
     }
