@@ -4,28 +4,34 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Models\Invoice;
+use Models\Store;
+use Models\PDF;
 
 class Seller extends User
 {
     use HasFactory;
 
     protected $fillable = [
-        'gender',
         'specilization',
-        'birth'
     ];
 
     protected $casts = [
         'created_at' => 'datetime',
     ];
 
-    public function invoice()
+    public function invoices()
     {
-        return $this->hasMeny(Invoice::class);
+        return $this->hasMany(Invoice::class);
     }
     
-    public function store()
+    public function stores()
     {
         return $this->hasOne(Store::class);
     }
+
+    public function pdf(){
+        return $this->hasOne(PDF::class);
+    }
+    
 }

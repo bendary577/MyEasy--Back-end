@@ -15,9 +15,9 @@ class CreateCustomersTable extends Migration
     {
         Schema::create('customers', function (Blueprint $table) {
             $table->id();
-            $table->foreign('id')->references('id')->on('users');
             $table->enum('gender', ['mail', 'femail']);
-            $table->date('birth');
+            $table->integer('orders_number');
+            $table->date('birth_date');
             $table->timestamps();
         });
     }

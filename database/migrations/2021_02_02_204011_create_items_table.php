@@ -15,15 +15,20 @@ class CreateItemsTable extends Migration
     {
         Schema::create('items', function (Blueprint $table) {
             $table->id();
+            $table->string('name');
+            $table->string('description');
+            $table->string('photo_path');
+            $table->integer('available_number');
+            $table->integer('ratings_number');
+            $table->float('price');
+            $table->float('rating');
+            $table->enum('category', ['electronic', 'sports']);
+            $table->enum('status', ['new', 'used']);
+            $table->timestamps();
             $table->unsignedbigInteger('store');
             $table->foreign('store')->references('id')->on('stores');
-            $table->string('name');
-            $table->float('price');
-            $table->string('category');
-            $table->date('add');
-            $table->bigInteger('available');
-            $table->string('photo_path');
-            $table->timestamps();
+            $table->unsignedbigInteger('customer_cart');
+            $table->foreign('customer_cart')->references('id')->on('customers');
         });
     }
 
