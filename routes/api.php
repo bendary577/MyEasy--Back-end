@@ -24,10 +24,15 @@ Route::get('register', 'UserController@register');
 /* Invoice */
 Route::resource('/company', 'CompanyController');
 Route::resource('/Customer', 'CustomerController');
-Route::resource('/invoice', 'InvoiceController');
+Route::apiResource('/invoice', 'InvoiceController');
 Route::resource('/item', 'ItemController');
 Route::resource('/seller', 'SellerController');
 Route::resource('/store', 'StoreController');
+<<<<<<< HEAD
 
 /* Bill To PDF */
 Route::get('pdf', 'PdfController@download');
+=======
+Route::get('/invoice', 'InvoiceController@index');
+Route::get('/invoice/{id}', 'InvoiceController@show');
+>>>>>>> f8c9a9829bc38b99e2d0ce765d36b005d4651644
