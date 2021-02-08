@@ -28,11 +28,9 @@ Route::apiResource('/invoice', 'InvoiceController');
 Route::resource('/item', 'ItemController');
 Route::resource('/seller', 'SellerController');
 Route::resource('/store', 'StoreController');
-<<<<<<< HEAD
+
+Route::get('/invoice', 'InvoiceController@index');
+Route::get('/invoice/{id}', 'InvoiceController@show');
 
 /* Bill To PDF */
 Route::get('pdf', 'PdfController@download');
-=======
-Route::get('/invoice', 'InvoiceController@index');
-Route::get('/invoice/{id}', 'InvoiceController@show');
->>>>>>> f8c9a9829bc38b99e2d0ce765d36b005d4651644
