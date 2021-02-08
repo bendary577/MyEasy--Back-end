@@ -27,20 +27,32 @@ Route::resource('/Customer', 'CustomerController');
 Route::resource('/item', 'ItemController');
 Route::resource('/seller', 'SellerController');
 Route::resource('/store', 'StoreController');
-
 Route::get('/invoice', 'InvoiceController@index');
 Route::get('/invoice/{id}', 'InvoiceController@show');
 
-<<<<<<< HEAD
+
+
+
+/**-----------------------users endpoint ------------------------------------- */
+Route::group(['as' => 'users'], function () {
+    Route::get('/', 'UserController@getAll')->name('getusers');
+    Route::get('/{id}', 'UserController@get')->name('getuser');
+    Route::post('/', 'UserController@create')->name('createuser');
+    Route::put('/{id}', 'UserController@update')->name('updateuser');
+    Route::delete('/{id}', 'UserController@delete')->name('deleteuser');
+  });
+
 
 /* ---------------------- items endpoint --------------------- */
-Route::get('items', 'ItemController@index');
-Route::get('items/{id}', 'ItemController@show');
-Route::post('items', 'ItemController@store');
-Route::put('items/{id}', 'ItemController@update');
-Route::delete('items/{id}','ItemController@destroy');
+  Route::group(['as' => 'items'], function () {
+    Route::get('/', 'ItemController@getAll')->name('getitems');
+    Route::get('/{id}', 'ItemController@get')->name('getitem');
+    Route::post('/', 'ItemController@create')->name('createitem');
+    Route::put('/{id}', 'ItemController@update')->name('updateitem');
+    Route::delete('/{id}', 'ItemController@delete')->name('deleteitem');
+  });
 
-=======
-/* Bill To PDF */
+
+
+  /* Bill To PDF */
 Route::get('pdf', 'PdfController@download');
->>>>>>> 65ed7ea2ba9bdf2ed83e10b001be3968820c4d78

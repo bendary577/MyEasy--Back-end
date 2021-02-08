@@ -8,49 +8,71 @@ use App\Http\Controllers\Controller;
 
 class ItemController extends Controller
 {
-    public function index()
+    /* -------------------------------------------get all items ------------------------------------------------ */
+    public function getAll()
     {
-        return response()->json(Item::get(), 200);
+        $items = Item::get()->toJson(JSON_PRETTY_PRINT);
+        return response($items, 200);
     }
 
-    public function create()
+    /* ------------------------------------- create an item-------------------------------------- */
+    public function create(Request $request)
     {
-        //
+
+        $data = $request->all();
+
+        $validator = Validator::make($data, [
+            'name' => 'required|max:255',
+            'description' => 'required|max:255',
+            'price' => 'required',
+        ]);
+
+        if ($validator->fails()) {
+            return response()->json(['message' => $validator->errors()], 'Validation Error');
+        }
+
+        $item = Item::create($data);
+        return response()->json(["message" => "item record created"], 201);
     }
 
-    public function store(Request $request)
+
+     /* -------------------------------------get one item -------------------------------------- */
+    public function getOne($id)
     {
-        $item = new Item;
-        $student->name = $request->name;
-        $student->course = $request->course;
-        $student->save();
-        return response()->json([
-            "message" => "item record created"
-        ], 201);
+        if (Item::where('id', $id)->exists()) {
+            $item = Item::where('id', $id)->get()->toJson(JSON_PRETTY_PRINT);
+            return response($item, 200);
+          } else {
+            return response()->json(["message" => "Student not found"], 404);
+          }
     }
 
-    public function show($id)
-    {
-        $item = Item::find($id);
-        return response()-json($item, 200);
-    }
-
-    public function edit($id)
-    {
-        //
-    }
-
+    /* -------------------------------------update one item -------------------------------------- */
     public function update(Request $request, $id)
     {
-        $item = Item::find($id);
-        $item->update($request->all());
-	    return response()->json($item, 200);
+        if (Item::where('id', $id)->exists()) {
+            $item = Item::find($id);
+            $item->name = is_null($request->name) ? $item->name : $request->name;
+            $item->course = is_null($request->course) ? $item->course : $request->course;
+            $item->save();
+    
+            return response()->json(["message" => "item updated successfully"], 200);
+            } else {
+            return response()->json(["message" => "item not found"], 404);
+            }
     }
 
-    public function destroy($id)
+    /* -------------------------------------delete item -------------------------------------- */
+    public function delete($id)
     {
-        $item = Item::find($id);
-        $item->delete();
-        return response()->json(null, 204);
+        if(Item::where('id', $id)->exists()) {
+            $item = Item::find($id);
+            $item->delete();
+            return response()->json(["message" => "record deleted"], 202);
+          } else {
+            return response()->json(["message" => "item not found"], 404);
+          }
     }
+
 }
+
