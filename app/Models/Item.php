@@ -9,6 +9,20 @@ class Item extends Model
 {
     use HasFactory;
 
+    protected $fillable = [
+        'store',
+        'name',
+        'price',
+        'category',
+        'add',
+        'available',
+        'photo_path'
+    ];
+
+    protected $casts = [
+        'created_at' => 'datetime',
+    ];
+
     public function user()
     {
         return $this->belongsTo(Store::class);

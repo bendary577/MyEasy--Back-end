@@ -8,8 +8,6 @@ use Illuminate\Database\Eloquent\Model;
 class Invoice extends Model
 {
     use HasFactory;
-    
-    protected $table = "invoices";
 
     protected $fillable = [
         'owner',
@@ -17,8 +15,10 @@ class Invoice extends Model
         'price',
         'creation',
         'expiration',
-        'created_at',
-        'updated_at'
+    ];
+
+    protected $casts = [
+        'created_at' => 'datetime',
     ];
 
     public function seller()

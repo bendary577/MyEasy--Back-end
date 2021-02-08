@@ -13,14 +13,8 @@ class Company extends User
         'specilization'
     ];
 
-    protected $hidden = [
-        'password',
-        'remember_token',
-    ];
-
     protected $casts = [
         'created_at' => 'datetime',
-        'updated_at' => 'datatime'
     ];
 
     public function invoice()
