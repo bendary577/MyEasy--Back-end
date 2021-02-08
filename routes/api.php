@@ -28,3 +28,6 @@ Route::resource('/invoice', 'InvoiceController');
 Route::resource('/item', 'ItemController');
 Route::resource('/seller', 'SellerController');
 Route::resource('/store', 'StoreController');
+
+/* Bill To PDF */
+Route::get('pdf', 'PdfController@download');
