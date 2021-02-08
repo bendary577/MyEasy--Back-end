@@ -9,6 +9,17 @@ class Store extends Model
 {
     use HasFactory;
 
+    protected $fillable = [
+        'owner',
+        'name',
+        'creation',
+        'specilization',
+    ];
+
+    protected $casts = [
+        'created_at' => 'datetime',
+    ];
+
     public function item()
     {
         return $this->hasMany(Item::class);
