@@ -5,12 +5,11 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Company extends Seller
+class PDF extends Model
 {
     use HasFactory;
 
-    protected $casts = [
-        'created_at' => 'datetime',
-    ];
-
+    public function seller(){
+        return $this->belongsTo(Seller::class);
+    }
 }

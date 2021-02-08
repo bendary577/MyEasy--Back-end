@@ -15,10 +15,12 @@ class CreateSellersTable extends Migration
     {
         Schema::create('sellers', function (Blueprint $table) {
             $table->id();
-            $table->foreign('id')->references('id')->on('users');
+            $table->integer('customers_number');
+            $table->integer('orders_number');
+            $table->float('delivery_speed');
             $table->enum('gender', ['mail', 'femail']);
-            $table->enum('specilization', ['men', 'electric']);
-            $table->date('birth');
+            $table->enum('badge', ['golde', 'silver', 'bronze']);
+            $table->enum('specilization', ['electronics', 'sports']);
             $table->timestamps();
         });
     }

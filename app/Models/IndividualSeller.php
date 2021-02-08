@@ -5,12 +5,13 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Company extends Seller
+class IndividualSeller extends Seller
 {
     use HasFactory;
 
-    protected $casts = [
-        'created_at' => 'datetime',
+    protected $fillable = [
+        'gender',
+        'birth_date',
     ];
 
 }

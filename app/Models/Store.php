@@ -10,9 +10,7 @@ class Store extends Model
     use HasFactory;
 
     protected $fillable = [
-        'owner',
         'name',
-        'creation',
         'specilization',
     ];
 
@@ -30,8 +28,4 @@ class Store extends Model
         return $this->belongsTo(Seller::class);
     }
 
-    public function company()
-    {
-        return $this->belongsTo(Company::class);
-    }
 }

@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Models\Seller;
 
 class Invoice extends Model
 {
@@ -26,8 +27,4 @@ class Invoice extends Model
         return $this->belongsTo(Seller::class);
     }
 
-    public function company()
-    {
-        return $this->belongsTo(Company::class);
-    }
 }

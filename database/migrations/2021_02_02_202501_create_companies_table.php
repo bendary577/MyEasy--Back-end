@@ -15,8 +15,6 @@ class CreateCompaniesTable extends Migration
     {
         Schema::create('companies', function (Blueprint $table) {
             $table->id();
-            $table->foreign('id')->references('id')->on('users');
-            $table->enum('specilization', ['men', 'electric']);
             $table->timestamps();
         });
     }
