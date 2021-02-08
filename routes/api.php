@@ -24,7 +24,9 @@ Route::get('register', 'UserController@register');
 /* Invoice */
 Route::resource('/company', 'CompanyController');
 Route::resource('/Customer', 'CustomerController');
-Route::resource('/invoice', 'InvoiceController');
+Route::apiResource('/invoice', 'InvoiceController');
 Route::resource('/item', 'ItemController');
 Route::resource('/seller', 'SellerController');
 Route::resource('/store', 'StoreController');
+Route::get('/invoice', 'InvoiceController@index');
+Route::get('/invoice/{id}', 'InvoiceController@show');

@@ -1,9 +1,10 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\APIs;
 
 use Illuminate\Http\Request;
 use App\Models\Invoice;
+use APP\HTTP\Controller;
 
 class InvoiceController extends Controller
 {
