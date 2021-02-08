@@ -19,11 +19,12 @@ class CreateUsersTable extends Migration
             $table->string('second_name');
             $table->string('email')->unique();
             $table->string('password');
-            $table->string('adress');
+            $table->string('phone_number');
+            $table->string('address');
             $table->string('zipcode');
             $table->string('photo_path');
             $table->string('bio');
-            $table->string('availabel_money_amnt');
+            $table->string('availabel_money_amnt')->default('0');
             $table->boolean('is_blocked')->default(0);
             $table->boolean('account_activated')->default(0);
             $table->timestamp('email_verified_at')->nullable();

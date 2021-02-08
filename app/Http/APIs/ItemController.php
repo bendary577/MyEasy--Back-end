@@ -5,13 +5,14 @@ namespace App\Http\APIs;
 use Illuminate\Http\Request;
 use App\Models\Item;
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Validator;
 
 class ItemController extends Controller
 {
     /* -------------------------------------------get all items ------------------------------------------------ */
     public function getAll()
     {
-        $items = Item::get()->toJson(JSON_PRETTY_PRINT);
+        $items = Item::get()->toJson();
         return response($items, 200);
     }
 
@@ -40,10 +41,10 @@ class ItemController extends Controller
     public function getOne($id)
     {
         if (Item::where('id', $id)->exists()) {
-            $item = Item::where('id', $id)->get()->toJson(JSON_PRETTY_PRINT);
+            $item = Item::where('id', $id)->get()->toJson();
             return response($item, 200);
           } else {
-            return response()->json(["message" => "Student not found"], 404);
+            return response()->json(["message" => "item not found"], 404);
           }
     }
 

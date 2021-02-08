@@ -18,25 +18,12 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
     return $request->user();
 });
 
-/* User */
-Route::get('register', 'UserController@register');
 
-/* Invoice */
-Route::resource('/company', 'CompanyController');
-Route::resource('/Customer', 'CustomerController');
-Route::resource('/item', 'ItemController');
-Route::resource('/seller', 'SellerController');
-Route::resource('/store', 'StoreController');
-Route::get('/invoice', 'InvoiceController@index');
-Route::get('/invoice/{id}', 'InvoiceController@show');
-
-
-
-/* ------------------- localhost:8080/api/users/getusers----------------- */
+/* ------------------- localhost:8080/users/getusers----------------- */
 /**-----------------------users endpoint ------------------------------------- */
 Route::group(['prefix' => 'users'], function () {
-    Route::get('/', 'UserController@getAll')->name('getusers');
-    Route::get('/{id}', 'UserController@get')->name('getuser');
+    Route::get('/', 'UserController@getAll')->name('getusers');       
+    Route::get('/{id}', 'UserController@get')->name('getuser');       
     Route::post('/', 'UserController@create')->name('createuser');
     Route::put('/{id}', 'UserController@update')->name('updateuser');
     Route::delete('/{id}', 'UserController@delete')->name('deleteuser');
@@ -45,14 +32,17 @@ Route::group(['prefix' => 'users'], function () {
 
 /* ---------------------- items endpoint --------------------- */
   Route::group(['prefix'=>'items'], function () {
-    Route::get('/', 'ItemController@getAll')->name('getitems');
-    Route::get('/{id}', 'ItemController@getOne')->name('getitem');
-    Route::post('/', 'ItemController@create')->name('createitem');
-    Route::put('/{id}', 'ItemController@update')->name('updateitem');
-    Route::delete('/{id}', 'ItemController@delete')->name('deleteitem');
+    Route::get('/', 'ItemController@getAll');            //http://127.0.0.1:8000/api/items/getitems
+    Route::get('/{id}', 'ItemController@getOne');        //http://127.0.0.1:8000/api/items/getitem
+    Route::post('/', 'ItemController@create');           //http://127.0.0.1:8000/api/items/createitem
+    Route::put('/{id}', 'ItemController@update');        //http://127.0.0.1:8000/api/items/updateitem
+    Route::delete('/{id}', 'ItemController@delete');     //http://127.0.0.1:8000/api/items/deleteitem
   });
 
 
 
-  /* Bill To PDF */
+
+
+
+/* ---------------------- pdf --------------------- */
 Route::get('pdf', 'PdfController@download');

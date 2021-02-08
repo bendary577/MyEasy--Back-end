@@ -12,13 +12,15 @@ class Item extends Model
     use HasFactory;
 
     protected $fillable = [
-        'store',
         'name',
+        'description',
+        'photo_path',
+        'available_number',
         'price',
         'category',
-        'add',
-        'available',
-        'photo_path'
+        'status',
+        'customer_cart',
+        'store'
     ];
 
     protected $casts = [
