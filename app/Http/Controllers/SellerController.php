@@ -23,8 +23,9 @@ class SellerController extends Controller
         return response()->json($seller, 201);
     }
 
-    public function show(Seller $seller)
+    public function show($id)
     {
+        $seller = Seller::find($id);
         return response()-json($seller, 200);
     }
 
@@ -33,14 +34,16 @@ class SellerController extends Controller
         //
     }
 
-    public function update(Request $request, Seller $seller)
+    public function update(Request $request, $id)
     {
+        $seller = Seller::find($id);
         $seller->update($request->all());
 	    return response()->json($seller, 200);
     }
 
-    public function destroy(Seller $seller)
+    public function destroy($id)
     {
+        $seller = Seller::find($id);
         $seller->delete();
         return response()->json(null, 204);
 

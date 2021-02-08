@@ -23,8 +23,9 @@ class StoreController extends Controller
         return response()->json($store, 201);
     }
 
-    public function show(Store $store)
+    public function show($id)
     {
+        $store = Store::find($id);
         return response()-json($store, 200);
     }
 
@@ -33,14 +34,16 @@ class StoreController extends Controller
         //
     }
 
-    public function update(Request $request, Store $store)
+    public function update(Request $request, $id)
     {
+        $store = Store::find($id);
         $store->update($request->all());
 	    return response()->json($store, 200);
     }
 
-    public function destroy(Store $store)
+    public function destroy($id)
     {
+        $store = Store::find($id);
         $store->delete();
         return response()->json(null, 204);
     }

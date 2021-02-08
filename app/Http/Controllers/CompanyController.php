@@ -23,8 +23,9 @@ class CompanyController extends Controller
         return response()->json($company, 201);
     }
 
-    public function show(Company $company)
+    public function show($id)
     {
+        $company = Company::find($id);
         return response()-json($company, 200);
     }
 
@@ -33,14 +34,16 @@ class CompanyController extends Controller
         //
     }
 
-    public function update(Request $request, Company $company)
+    public function update(Request $request, $id)
     {
+        $company = Company::find($id);
         $company->update($request->all());
 	    return response()->json($company, 200);
     }
 
-    public function destroy(Company $company)
+    public function destroy($id)
     {
+        $company = Company::find($id);
         $company->delete();
         return response()->json(null, 204);
     }
