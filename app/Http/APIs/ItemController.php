@@ -20,7 +20,7 @@ class ItemController extends Controller
     {
 
         $data = $request->all();
-
+        //validator or request validator
         $validator = Validator::make($data, [
             'name' => 'required|max:255',
             'description' => 'required|max:255',

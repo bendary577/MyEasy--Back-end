@@ -17,6 +17,7 @@ class CreateSellersTable extends Migration
             $table->id('id');
             $table->integer('customers_number');
             $table->integer('orders_number');
+            $table->boolean('has_store')->default(0);
             $table->float('delivery_speed');
             $table->enum('gender', ['mail', 'femail']);
             $table->enum('badge', ['golde', 'silver', 'bronze']);

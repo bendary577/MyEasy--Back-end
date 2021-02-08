@@ -32,9 +32,9 @@ Route::get('/invoice/{id}', 'InvoiceController@show');
 
 
 
-
+/* ------------------- localhost:8080/api/users/getusers----------------- */
 /**-----------------------users endpoint ------------------------------------- */
-Route::group(['as' => 'users'], function () {
+Route::group(['prefix' => 'users'], function () {
     Route::get('/', 'UserController@getAll')->name('getusers');
     Route::get('/{id}', 'UserController@get')->name('getuser');
     Route::post('/', 'UserController@create')->name('createuser');
@@ -44,9 +44,9 @@ Route::group(['as' => 'users'], function () {
 
 
 /* ---------------------- items endpoint --------------------- */
-  Route::group(['as' => 'items'], function () {
+  Route::group(['prefix'=>'items'], function () {
     Route::get('/', 'ItemController@getAll')->name('getitems');
-    Route::get('/{id}', 'ItemController@get')->name('getitem');
+    Route::get('/{id}', 'ItemController@getOne')->name('getitem');
     Route::post('/', 'ItemController@create')->name('createitem');
     Route::put('/{id}', 'ItemController@update')->name('updateitem');
     Route::delete('/{id}', 'ItemController@delete')->name('deleteitem');
