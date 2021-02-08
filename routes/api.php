@@ -24,9 +24,17 @@ Route::get('register', 'UserController@register');
 /* Invoice */
 Route::resource('/company', 'CompanyController');
 Route::resource('/Customer', 'CustomerController');
-Route::apiResource('/invoice', 'InvoiceController');
 Route::resource('/item', 'ItemController');
 Route::resource('/seller', 'SellerController');
 Route::resource('/store', 'StoreController');
 Route::get('/invoice', 'InvoiceController@index');
 Route::get('/invoice/{id}', 'InvoiceController@show');
+
+
+/* ---------------------- items endpoint --------------------- */
+Route::get('items', 'ItemController@index');
+Route::get('items/{id}', 'ItemController@show');
+Route::post('items', 'ItemController@store');
+Route::put('items/{id}', 'ItemController@update');
+Route::delete('items/{id}','ItemController@destroy');
+

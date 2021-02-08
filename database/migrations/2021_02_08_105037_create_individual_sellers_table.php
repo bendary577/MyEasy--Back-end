@@ -14,7 +14,7 @@ class CreateIndividualSellersTable extends Migration
     public function up()
     {
         Schema::create('individual_sellers', function (Blueprint $table) {
-            $table->id();
+            $table->id('id');
             $table->date('birth_date');
             $table->enum('gender', ['male', 'female']);
             $table->timestamps();

@@ -14,7 +14,7 @@ class CreateSellersTable extends Migration
     public function up()
     {
         Schema::create('sellers', function (Blueprint $table) {
-            $table->id();
+            $table->id('id');
             $table->integer('customers_number');
             $table->integer('orders_number');
             $table->float('delivery_speed');
