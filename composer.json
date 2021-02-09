@@ -16,11 +16,8 @@
         "guzzlehttp/guzzle": "^7.2",
         "laravel/framework": "^8.12",
         "laravel/tinker": "^2.5",
-<<<<<<< HEAD
+        "pusher/pusher-php-server": "^4.1",
         "tymon/jwt-auth": "^1.0"
-=======
-        "pusher/pusher-php-server": "^4.1"
->>>>>>> d7d783c13ce97075fe5189d47418a58e2bb3d2da
     },
     "require-dev": {
         "facade/ignition": "^2.5",
