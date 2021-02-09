@@ -25,6 +25,8 @@ class CreateUsersTable extends Migration
             $table->string('photo_path');
             $table->string('bio');
             $table->string('availabel_money_amnt')->default('0');
+            $table->string('profile_type')->nullable();
+            $table->unsignedInteger('profile_id')->nullable();
             $table->boolean('is_blocked')->default(0);
             $table->boolean('account_activated')->default(0);
             $table->timestamp('email_verified_at')->nullable();

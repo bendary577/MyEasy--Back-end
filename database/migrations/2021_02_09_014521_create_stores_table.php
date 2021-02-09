@@ -21,7 +21,7 @@ class CreateStoresTable extends Migration
             $table->enum('categories', ['men', 'electric']);
             $table->timestamps(); 
             $table->unsignedbigInteger('owner');
-            $table->foreign('owner')->references('id')->on('sellers');
+            $table->foreign('owner')->references('id')->on('seller_profiles');
         });
     }
 

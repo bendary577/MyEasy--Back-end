@@ -4,9 +4,9 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use Models\Item;
+use Models\Product;
 
-class Customer extends User
+class CustomerProfile extends Model
 {
     use HasFactory;
 
@@ -19,8 +19,13 @@ class Customer extends User
         'created_at' => 'datetime',
     ];
 
-    public function item()
+    public function product()
     {
-        return $this->hasMany(Item::class);
+        return $this->hasMany(Product::class);
     }
+
+    public function user(){ 
+        return $this->morphOne('App\Models\User', 'profile');
+    }
+
 }

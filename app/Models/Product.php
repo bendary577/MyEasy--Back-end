@@ -5,9 +5,9 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Models\Store;
-use Models\Customer;
+use Models\CustomerProfile;
 
-class Item extends Model
+class Product extends Model
 {
     use HasFactory;
 
@@ -27,13 +27,13 @@ class Item extends Model
         'created_at' => 'datetime',
     ];
 
-    public function user()
+    public function store()
     {
         return $this->belongsTo(Store::class);
     }
 
-    public function customer()
+    public function customerProfile()
     {
-        return $this->belongsToMany(Customer::class);
+        return $this->belongsToMany(CustomerProfile::class);
     }
 }

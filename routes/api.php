@@ -19,6 +19,17 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
 });
 
 
+Route::group([ 'middleware' => ['api'],'prefix' => 'user'], static function ($router) {
+    Route::post('/login', 'UserController@authenticate');
+    Route::post('/register', 'UserController@register');
+    Route::group(['middleware' => 'jwt.verify'], static function( $router){
+        Route::post('/logout', 'UserController@logout');
+        Route::post('/refresh', 'UserController@refresh');
+        Route::get('/detail', 'UserController@detail'); });
+});
+
+
+
 /* ------------------- localhost:8080/users/getusers----------------- */
 /**-----------------------users endpoint ------------------------------------- */
 Route::group(['prefix' => 'users'], function () {
@@ -31,12 +42,12 @@ Route::group(['prefix' => 'users'], function () {
 
 
 /* ---------------------- items endpoint --------------------- */
-  Route::group(['prefix'=>'items'], function () {
-    Route::get('/', 'ItemController@getAll');            //http://127.0.0.1:8000/api/items/getitems
-    Route::get('/{id}', 'ItemController@getOne');        //http://127.0.0.1:8000/api/items/getitem
-    Route::post('/', 'ItemController@create');           //http://127.0.0.1:8000/api/items/createitem
-    Route::put('/{id}', 'ItemController@update');        //http://127.0.0.1:8000/api/items/updateitem
-    Route::delete('/{id}', 'ItemController@delete');     //http://127.0.0.1:8000/api/items/deleteitem
+  Route::group(['prefix'=>'products'], function () {
+    Route::get('/', 'ProductController@getAll');            //http://127.0.0.1:8000/api/products/getitems
+    Route::get('/{id}', 'ProductController@getOne');        //http://127.0.0.1:8000/api/products/getitem
+    Route::post('/', 'ProductController@create');           //http://127.0.0.1:8000/api/products/createitem
+    Route::put('/{id}', 'ProductController@update');        //http://127.0.0.1:8000/api/products/updateitem
+    Route::delete('/{id}', 'ProductController@delete');     //http://127.0.0.1:8000/api/products/deleteitem
   });
 
 

@@ -18,14 +18,19 @@ class Store extends Model
         'created_at' => 'datetime',
     ];
 
-    public function item()
+    public function product()
     {
-        return $this->hasMany(Item::class);
+        return $this->hasMany(Product::class);
     }
 
-    public function seller()
+    public function sellerProfile()
     {
-        return $this->belongsTo(Seller::class);
+        return $this->belongsTo(SellerProfile::class);
+    }
+
+    public function companyProfile()
+    {
+        return $this->belongsTo(CompanyProfile::class);
     }
 
 }

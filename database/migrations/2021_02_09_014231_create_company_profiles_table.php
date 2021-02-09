@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateSellersTable extends Migration
+class CreateCompanyProfilesTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,13 +13,13 @@ class CreateSellersTable extends Migration
      */
     public function up()
     {
-        Schema::create('sellers', function (Blueprint $table) {
-            $table->id('id');
+        Schema::create('company_profiles', function (Blueprint $table) {
+            $table->id();
+            $table->string("haha");
             $table->integer('customers_number');
             $table->integer('orders_number');
-            $table->boolean('has_store')->default(0);
             $table->float('delivery_speed');
-            $table->enum('gender', ['mail', 'femail']);
+            $table->boolean('has_store')->default(0);
             $table->enum('badge', ['golde', 'silver', 'bronze']);
             $table->enum('specilization', ['electronics', 'sports']);
             $table->timestamps();
@@ -33,6 +33,6 @@ class CreateSellersTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('sellers');
+        Schema::dropIfExists('company_profiles');
     }
 }

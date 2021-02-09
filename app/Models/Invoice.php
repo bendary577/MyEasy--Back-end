@@ -4,7 +4,8 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use Models\Seller;
+use Models\SellerProfile;
+use Models\CompanyProfile;
 
 class Invoice extends Model
 {
@@ -22,9 +23,14 @@ class Invoice extends Model
         'created_at' => 'datetime',
     ];
 
-    public function seller()
+    public function sellerProfile()
     {
-        return $this->belongsTo(Seller::class);
+        return $this->belongsTo(SellerProfile::class);
+    }
+
+    public function companyProfile()
+    {
+        return $this->belongsTo(CompanyProfile::class);
     }
 
 }

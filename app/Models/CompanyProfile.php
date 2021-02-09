@@ -4,11 +4,8 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use Models\Invoice;
-use Models\Store;
-use Models\PDF;
 
-class Seller extends User
+class CompanyProfile extends Model
 {
     use HasFactory;
 
@@ -30,8 +27,9 @@ class Seller extends User
         return $this->hasOne(Store::class);
     }
 
-    public function pdf(){
-        return $this->hasOne(PDF::class);
+    public function user(){ 
+        return $this->morphOne('App\Models\User', 'profile');
     }
-    
+
+
 }
