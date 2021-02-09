@@ -53,3 +53,6 @@ Route::group(['prefix'=>'products'], function () {
 
 /* ---------------------- pdf --------------------- */
 Route::get('pdf', 'PdfController@download');
+
+/* */
+Route::get('sendmail', 'OrderController@sent');
