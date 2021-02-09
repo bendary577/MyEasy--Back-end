@@ -4,12 +4,68 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
+<<<<<<< Updated upstream
 <<<<<<< HEAD
     "content-hash": "174038d12b321c06c7af7408ee2ff76e",
 =======
     "content-hash": "8c7a8f53721c50480078648a3ddaa5cf",
 >>>>>>> d7d783c13ce97075fe5189d47418a58e2bb3d2da
+=======
+    "content-hash": "416e03d3b64dfd0bcb9f152677b9756b",
+>>>>>>> Stashed changes
     "packages": [
+        {
+            "name": "ably/ably-php",
+            "version": "1.1.3",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/ably/ably-php.git",
+                "reference": "f5e6ebd88de0da60147764518e7dd07a79018ba2"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/ably/ably-php/zipball/f5e6ebd88de0da60147764518e7dd07a79018ba2",
+                "reference": "f5e6ebd88de0da60147764518e7dd07a79018ba2",
+                "shasum": ""
+            },
+            "require": {
+                "ext-curl": "*",
+                "ext-json": "*",
+                "ext-openssl": "*",
+                "php": "^5.6 || ^7.0"
+            },
+            "require-dev": {
+                "phpunit/phpunit": "^4.8 || ^5.7"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "Ably\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "Apache-2.0"
+            ],
+            "authors": [
+                {
+                    "name": "Ably",
+                    "email": "support@ably.io"
+                }
+            ],
+            "description": "Ably REST client library for PHP.",
+            "homepage": "https://www.ably.io/",
+            "keywords": [
+                "ably",
+                "messages",
+                "messaging"
+            ],
+            "support": {
+                "issues": "https://github.com/ably/ably-php/issues",
+                "source": "https://github.com/ably/ably-php/tree/1.1.3"
+            },
+            "time": "2019-10-04T14:04:03+00:00"
+        },
         {
             "name": "asm89/stack-cors",
             "version": "v2.0.2",
