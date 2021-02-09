@@ -11,16 +11,21 @@ class Admin extends User
 
     protected $table = 'users';
 
-    protected $fillable = [
+    /*protected $fillable = [
         'admin_name',
-        'admin_age'
     ];
+    */
 
     public static function boot(){
         parent::boot();
-        static::addGlobalScope(function ($query) {
-            $query->where('is_admin', true);
+
+        static::addGlobalScope(function(Builder $builder) {
+            $builder->where('type', 'admin');
         });
+        
+        static::creating(function ($admin) {
+            $admin->type = 'admin';
+        }); 
     }
 
 

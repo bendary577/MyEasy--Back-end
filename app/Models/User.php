@@ -7,9 +7,12 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 
-class User extends Authenticatable
+class User extends InheritableModel implements 
+    AuthenticatableContract,
+    AuthorizableContract,
+    CanResetPasswordContract
 {
-    use HasFactory, Notifiable;
+    use HasFactory, Authenticatable, Authorizable, CanResetPassword, Notifiable;
 
     /**
      * The attributes that are mass assignable.
