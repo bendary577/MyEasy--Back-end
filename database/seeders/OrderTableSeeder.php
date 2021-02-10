@@ -2,10 +2,11 @@
 
 namespace Database\Seeders;
 
-use App\Models\Invoice;
+use App\Models\CustomerProfile;
+use App\Models\Order;
 use Illuminate\Database\Seeder;
 
-class InvoiceTableSeeder extends Seeder
+class OrderTableSeeder extends Seeder
 {
     /**
      * Run the database seeds.
@@ -16,10 +17,13 @@ class InvoiceTableSeeder extends Seeder
     {
         $faker = \Faker\Factory::create();
         for ($i = 0; $i < 50; $i++) {
-            Invoice::create([
+            Order::create([
+                'customer_name' => $faker->name,
+                'seller_name' => $faker->name,
                 'price' => $faker->randomNumber(),
-                'expiration' => $faker->date(),
-                'owner' => '1',
+                'status' => 'closed',
+                'customer_id' => '3',
+                'seller_id' => '2',
             ]);
         }
     }

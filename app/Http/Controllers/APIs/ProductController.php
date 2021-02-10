@@ -16,7 +16,7 @@ class ProductController extends Controller
         return response($product, 200);
     }
 
-    /* ------------------------------------- create an product -------------------------------------- */
+    /* ------------------------------------- create a product -------------------------------------- */
     public function create(Request $request): \Illuminate\Http\JsonResponse
     {
 

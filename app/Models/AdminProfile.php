@@ -9,12 +9,11 @@ class AdminProfile extends Model
 {
     use HasFactory;
 
-    /*protected $fillable = [
+    protected $fillable = [
         'admin_name',
     ];
-    */
 
-    public function user(){ 
+    public function user(){
         return $this->morphOne('App\Models\User', 'profile');
     }
 

@@ -16,13 +16,13 @@ class CreateSellerProfilesTable extends Migration
         Schema::create('seller_profiles', function (Blueprint $table) {
             $table->id();
             $table->integer('customers_number');
-            $table->integer('customers_number');
+            $table->integer('orders_number');
             $table->float('delivery_speed');
             $table->boolean('has_store')->default(0);
             $table->date('birth_date');
-            $table->enum('gender', ['mail', 'femail']);
-            $table->enum('badge', ['golde', 'silver', 'bronze']);
-            $table->enum('specilization', ['electronics', 'sports']);
+            $table->enum('gender', ['male', 'female']);
+            $table->enum('badge', ['gold', 'silver', 'bronze']);
+            $table->enum('specialization', ['electronics', 'sports']);
             $table->timestamps();
         });
     }

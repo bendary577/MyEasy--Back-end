@@ -19,8 +19,8 @@ class CreateCompanyProfilesTable extends Migration
             $table->integer('orders_number');
             $table->float('delivery_speed');
             $table->boolean('has_store')->default(0);
-            $table->enum('badge', ['golde', 'silver', 'bronze']);
-            $table->enum('specilization', ['electronics', 'sports']);
+            $table->enum('badge', ['gold', 'silver', 'bronze']);
+            $table->enum('specialization', ['electronics', 'sports']);
             $table->timestamps();
         });
     }
