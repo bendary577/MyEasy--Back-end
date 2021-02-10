@@ -17,24 +17,23 @@ use Illuminate\Support\Facades\Route;
 Route::middleware('auth:api')->get('/user', function (Request $request) {
     return $request->user();
 });
-
-
+                    //http://127.0.0.1:8000/api/user/login
+/*----------------------- authentication endpoints ------------------------------------- */
 Route::group([ 'middleware' => ['api'],'prefix' => 'user'], static function ($router) {
-  Route::post('/login', 'UserController@authenticate');
-  Route::post('/register', 'UserController@register');
+  Route::post('/login', 'AuthenticationController@login');
+  Route::post('/register', 'AuthenticationController@register');
+  Route::post('/me', 'AuthenticationController@me');
   Route::group(['middleware' => 'jwt.verify'], static function( $router){
-    Route::post('/logout', 'UserController@logout');
-    Route::post('/refresh', 'UserController@refresh');
-    Route::get('/detail', 'UserController@detail'); });
+    Route::post('/logout', 'AuthenticationController@logout');
+    Route::post('/refresh', 'AuthenticationController@refresh');
+    Route::get('/detail', 'AuthenticationController@detail'); });
 });
 
 
-
-/* ------------------- localhost:8080/users/getusers----------------- */
-/**-----------------------users endpoint ------------------------------------- */
+/*----------------------- users endpoint ------------------------------------- */
 Route::group(['prefix' => 'users'], function () {
-  Route::get('/', 'UserController@getAll')->name('getusers');       
-  Route::get('/{id}', 'UserController@get')->name('getuser');       
+  Route::get('/', 'UserController@getAll')->name('getusers');
+  Route::get('/{id}', 'UserController@getOne')->name('getuser');
   Route::post('/', 'UserController@create')->name('createuser');
   Route::put('/{id}', 'UserController@update')->name('updateuser');
   Route::delete('/{id}', 'UserController@delete')->name('deleteuser');

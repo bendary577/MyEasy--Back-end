@@ -1,7 +1,10 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\APIs;
 
+use App\Http\Controllers\Controller;
+use Illuminate\Contracts\Auth\Guard;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use App\Models\User;
 use Illuminate\Support\Facades\Hash;
@@ -10,11 +13,20 @@ use Tymon\JWTAuth\Facades\JWTAuth;
 use Tymon\JWTAuth\Exceptions\JWTException;
 use Symfony\Component\HttpFoundation\Response;
 
-class UserController extends Controller
+class AuthenticationController extends Controller
 {
+    /**
+     * Create a new AuthController instance.
+     *
+     * @return void
+     */
+    public function __construct()
+    {
+        $this->middleware('auth:api', ['except' => ['login']]);
+    }
 
      /* -------------------------------- register ------------------------------------------ */
-    public function register(Request $request)
+    public function register(Request $request): JsonResponse
     {
         $validator = Validator::make($request->all(), [
             'name' => 'required|string|max:255',
@@ -38,12 +50,12 @@ class UserController extends Controller
     }
 
     /* -------------------------------- login ------------------------------------------ */
-    public function login(Request $request)
+    public function login(Request $request): JsonResponse
     {
-
         $credentials = $request->only('email', 'password');
 
         try {
+            //returns a token if found this credentials are found in database
             if (!$token = JWTAuth::attempt($credentials)) {
                 return response()->json(['error' => 'invalid_credentials'], 400);
             }
@@ -54,15 +66,26 @@ class UserController extends Controller
         return response()->json(compact('token'));
     }
 
+    /**
+     * Get the authenticated User
+     *
+     * @return JsonResponse
+     */
+    public function me()
+    {
+        return response()->json($this->guard()->user());
+    }
+
      /* -------------------------------- logout ------------------------------------------ */
-    public function logout(Request $request)
+    public function logout(Request $request): JsonResponse
     {
         $this->validate($request, [
             'token' => 'required'
         ]);
+
         try {
             JWTAuth::invalidate($request->token);
-  
+
             return response()->json([
                 'success' => true,
                 'message' => 'User logged out successfully'
@@ -73,10 +96,10 @@ class UserController extends Controller
                 'message' => 'Sorry, the user cannot be logged out'
             ], Response::HTTP_INTERNAL_SERVER_ERROR);
         }
-    }  
+    }
 
      /* -------------------------------- getUser ------------------------------------------ */
-    public function getAuthenticatedUser()
+    public function getAuthenticatedUser(): JsonResponse
     {
         try {
 
@@ -97,8 +120,41 @@ class UserController extends Controller
         return response()->json(compact('user'));
     }
 
+    /**
+     * Refresh a token.
+     *
+     * @return JsonResponse
+     */
+    public function refresh(): JsonResponse
+    {
+        return $this->respondWithToken($this->guard()->refresh());
+    }
 
-     /* -------------------------------- login ------------------------------------------ */
-      /* -------------------------------- login ------------------------------------------ */
-       /* -------------------------------- login ------------------------------------------ */
+    /**
+     * Get the token array structure.
+     *
+     * @param string $token
+     *
+     * @return JsonResponse
+     */
+    protected function respondWithToken(string $token): JsonResponse
+    {
+        return response()->json([
+            'access_token' => $token,
+            'token_type' => 'bearer',
+            'expires_in' => $this->guard()->factory()->getTTL() * 60
+        ]);
+    }
+
+
+    /**
+     * Get the guard to be used during authentication.
+     *
+     * @return Guard
+     */
+    public function guard(): Guard
+    {
+        return Auth::guard();
+    }
+
 }

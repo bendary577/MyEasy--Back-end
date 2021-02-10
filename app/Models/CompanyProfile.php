@@ -17,17 +17,18 @@ class CompanyProfile extends Model
         'created_at' => 'datetime',
     ];
 
-    public function invoices()
+    public function invoices(): \Illuminate\Database\Eloquent\Relations\HasMany
     {
         return $this->hasMany(Invoice::class);
     }
-    
-    public function stores()
+
+    public function stores(): \Illuminate\Database\Eloquent\Relations\HasOne
     {
         return $this->hasOne(Store::class);
     }
 
-    public function user(){ 
+    public function user(): \Illuminate\Database\Eloquent\Relations\MorphOne
+    {
         return $this->morphOne('App\Models\User', 'profile');
     }
 
