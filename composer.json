@@ -14,9 +14,10 @@
         "fideloper/proxy": "^4.4",
         "fruitcake/laravel-cors": "^2.0",
         "guzzlehttp/guzzle": "^7.2",
+        "illuminate/auth": "^8.27",
         "laravel/framework": "^8.12",
         "laravel/tinker": "^2.5",
-        "pusher/pusher-php-server": "^4.1",
+        "pusher/pusher-php-server": "~4.0",
         "tymon/jwt-auth": "^1.0.0-rc.2"
     },
     "require-dev": {

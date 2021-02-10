@@ -26,7 +26,7 @@ class ProductTableSeeder extends Seeder
                 'rating' => $faker->randomNumber(),
                 'category' => 'electronics',
                 'status' => 'new',
-                'store' => '2',
+                'store' => '1',
                 'customer_cart' => '4',
             ]);
         }

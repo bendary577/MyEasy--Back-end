@@ -12,8 +12,6 @@ class UserTableSeeder extends Seeder
      *
      * @return void
      */
-
-
     public function run()
     {
         $faker = \Faker\Factory::create();
@@ -22,7 +20,7 @@ class UserTableSeeder extends Seeder
                 'first_name' => $faker->name,
                 'second_name' => $faker->name,
                 'email' => $faker->email,
-                'password' => $faker->password,
+                'password' => $faker->word,
             ]);
         }
     }

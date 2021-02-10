@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\APIs;
 
+use App\Events\NewOrderNotification;
 use App\Http\Controllers\Controller;
 use App\Models\Order;
 use Illuminate\Http\Request;
@@ -31,6 +32,13 @@ class OrderController extends Controller
         }
 
         $order = Order::create($data);
+
+        $date = [
+            'customer_name' => $request->customer_name,
+            'created_at' => $request->created_at,
+        ];
+
+        event(new NewOrderNotification($data));
         return response()->json(["message" => "Order record created"], 201);
     }
 
