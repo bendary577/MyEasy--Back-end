@@ -27,12 +27,17 @@ class Product extends Model
         'created_at' => 'datetime',
     ];
 
-    public function store()
+    public function store(): \Illuminate\Database\Eloquent\Relations\BelongsTo
     {
         return $this->belongsTo(Store::class);
     }
 
-    public function customerProfile()
+    public function order(): \Illuminate\Database\Eloquent\Relations\BelongsTo
+    {
+        return $this->belongsTo(Order::class);
+    }
+
+    public function customerProfile(): \Illuminate\Database\Eloquent\Relations\BelongsToMany
     {
         return $this->belongsToMany(CustomerProfile::class);
     }

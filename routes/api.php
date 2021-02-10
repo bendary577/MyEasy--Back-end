@@ -40,7 +40,7 @@ Route::group(['prefix' => 'users'], function () {
 });
 
 
-/* ---------------------- items endpoint --------------------- */
+/* ---------------------- products endpoint --------------------- */
 Route::group(['prefix'=>'products'], function () {
   Route::get('/', 'ProductController@getAll');            //http://127.0.0.1:8000/api/products/getitems
   Route::get('/{id}', 'ProductController@getOne');        //http://127.0.0.1:8000/api/products/getitem
@@ -54,4 +54,4 @@ Route::group(['prefix'=>'products'], function () {
 Route::get('pdf', 'PdfController@download');
 
 /* */
-Route::get('sendmail', 'OrderController@sent');
+Route::get('sendmail', 'EmailOrderController@sent');

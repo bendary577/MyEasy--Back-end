@@ -17,7 +17,7 @@ class ProductController extends Controller
     }
 
     /* ------------------------------------- create an product -------------------------------------- */
-    public function create(Request $request)
+    public function create(Request $request): \Illuminate\Http\JsonResponse
     {
 
         $data = $request->all();
@@ -25,7 +25,7 @@ class ProductController extends Controller
         $validator = Validator::make($data, [
             'name' => 'required|max:255',
             'description' => 'required|max:255',
-            'price' => 'required',
+            'price' => 'required'
         ]);
 
         if ($validator->fails()) {
@@ -49,12 +49,17 @@ class ProductController extends Controller
     }
 
     /* -------------------------------------update one product -------------------------------------- */
-    public function update(Request $request, $id)
+    public function update(Request $request, $id): \Illuminate\Http\JsonResponse
     {
         if (Product::where('id', $id)->exists()) {
             $product = Product::find($id);
             $product->name = is_null($request->name) ? $product->name : $request->name;
-            $product->course = is_null($request->course) ? $product->course : $request->course;
+            $product->description = is_null($request->description) ? $product->description : $request->description;
+            $product->description = is_null($request->description) ? $product->description : $request->description;
+            $product->photo_path = is_null($request->photo_path) ? $product->photo_path : $request->photo_path;
+            $product->available_number = is_null($request->available_number) ? $product->available_number : $request->available_number;
+            $product->price = is_null($request->price) ? $product->price : $request->price;
+            $product->status = is_null($request->status) ? $product->status : $request->status;
             $product->save();
 
             return response()->json(["message" => "Product updated successfully"], 200);
@@ -64,7 +69,7 @@ class ProductController extends Controller
     }
 
     /* -------------------------------------delete product -------------------------------------- */
-    public function delete($id)
+    public function delete($id): \Illuminate\Http\JsonResponse
     {
         if(Product::where('id', $id)->exists()) {
             $product = Product::find($id);

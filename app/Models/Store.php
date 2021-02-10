@@ -18,17 +18,17 @@ class Store extends Model
         'created_at' => 'datetime',
     ];
 
-    public function product()
+    public function product(): \Illuminate\Database\Eloquent\Relations\HasMany
     {
         return $this->hasMany(Product::class);
     }
 
-    public function sellerProfile()
+    public function sellerProfile(): \Illuminate\Database\Eloquent\Relations\BelongsTo
     {
         return $this->belongsTo(SellerProfile::class);
     }
 
-    public function companyProfile()
+    public function companyProfile(): \Illuminate\Database\Eloquent\Relations\BelongsTo
     {
         return $this->belongsTo(CompanyProfile::class);
     }
