@@ -19,7 +19,6 @@ class CreateOrdersTable extends Migration
             $table->string("seller_name");
             $table->float("price");
             $table->enum("status", ['open', 'on_way', 'delivered', 'closed']);
-            $table->id();
             $table->timestamps();
             $table->unsignedbigInteger('customer_id');
             $table->foreign('customer_id')->references('id')->on('customer_profiles');

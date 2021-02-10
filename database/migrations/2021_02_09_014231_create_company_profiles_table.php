@@ -15,7 +15,6 @@ class CreateCompanyProfilesTable extends Migration
     {
         Schema::create('company_profiles', function (Blueprint $table) {
             $table->id();
-            $table->string("haha");
             $table->integer('customers_number');
             $table->integer('orders_number');
             $table->float('delivery_speed');

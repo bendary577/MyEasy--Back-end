@@ -42,12 +42,43 @@ Route::group(['prefix' => 'users'], function () {
 
 /* ---------------------- products endpoint --------------------- */
 Route::group(['prefix'=>'products'], function () {
-  Route::get('/', 'ProductController@getAll');            //http://127.0.0.1:8000/api/products/getitems
-  Route::get('/{id}', 'ProductController@getOne');        //http://127.0.0.1:8000/api/products/getitem
-  Route::post('/', 'ProductController@create');           //http://127.0.0.1:8000/api/products/createitem
-  Route::put('/{id}', 'ProductController@update');        //http://127.0.0.1:8000/api/products/updateitem
-  Route::delete('/{id}', 'ProductController@delete');     //http://127.0.0.1:8000/api/products/deleteitem
+  Route::get('/', 'ProductController@getAll');            //http://127.0.0.1:8000/api/products/
+  Route::get('/{id}', 'ProductController@getOne');        //http://127.0.0.1:8000/api/products/1
+  Route::post('/', 'ProductController@create');           //http://127.0.0.1:8000/api/products/
+  Route::put('/{id}', 'ProductController@update');        //http://127.0.0.1:8000/api/products/1
+  Route::delete('/{id}', 'ProductController@delete');     //http://127.0.0.1:8000/api/products/1
 });
+
+/* ---------------------- stores endpoint --------------------- */
+Route::group(['prefix'=>'stores'], function () {
+    Route::get('/', 'StoreController@getAll');            //http://127.0.0.1:8000/api/stores/
+    Route::get('/{id}', 'StoreController@getOne');        //http://127.0.0.1:8000/api/stores/1
+    Route::post('/', 'StoreController@create');           //http://127.0.0.1:8000/api/stores/
+    Route::put('/{id}', 'StoreController@update');        //http://127.0.0.1:8000/api/stores/1
+    Route::delete('/{id}', 'StoreController@delete');     //http://127.0.0.1:8000/api/stores/1
+});
+
+/* ---------------------- invoices endpoint --------------------- */
+Route::group(['prefix'=>'invoices'], function () {
+    Route::get('/', 'InvoiceController@getAll');            //http://127.0.0.1:8000/api/invoices/
+    Route::get('/{id}', 'InvoiceController@getOne');        //http://127.0.0.1:8000/api/invoices/1
+    Route::post('/', 'InvoiceController@create');           //http://127.0.0.1:8000/api/invoices/
+    Route::put('/{id}', 'InvoiceController@update');        //http://127.0.0.1:8000/api/invoices/1
+    Route::delete('/{id}', 'InvoiceController@delete');     //http://127.0.0.1:8000/api/invoices/1
+});
+
+
+/* ---------------------- orders endpoint --------------------- */
+Route::group(['prefix'=>'orders'], function () {
+    Route::get('/', 'OrderController@getAll');            //http://127.0.0.1:8000/api/orders/
+    Route::get('/{id}', 'OrderController@getOne');        //http://127.0.0.1:8000/api/orders/
+    Route::post('/', 'OrderController@create');           //http://127.0.0.1:8000/api/orders/
+    Route::put('/{id}', 'OrderController@update');        //http://127.0.0.1:8000/api/orders/
+    Route::delete('/{id}', 'OrderController@delete');     //http://127.0.0.1:8000/api/orders/
+});
+
+
+
 
 
 /* ---------------------- pdf --------------------- */
