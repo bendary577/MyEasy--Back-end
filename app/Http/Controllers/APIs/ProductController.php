@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\APIs;
+namespace App\Http\Controllers\APIs;
 
 use Illuminate\Http\Request;
 use App\Models\Product;
@@ -56,7 +56,7 @@ class ProductController extends Controller
             $product->name = is_null($request->name) ? $product->name : $request->name;
             $product->course = is_null($request->course) ? $product->course : $request->course;
             $product->save();
-    
+
             return response()->json(["message" => "Product updated successfully"], 200);
             } else {
             return response()->json(["message" => "Product not found"], 404);

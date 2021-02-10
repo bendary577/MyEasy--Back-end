@@ -19,11 +19,11 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
 });
                     //http://127.0.0.1:8000/api/user/login
 /*----------------------- authentication endpoints ------------------------------------- */
-Route::group([ 'middleware' => ['api'],'prefix' => 'user'], static function ($router) {
+Route::group([ 'middleware' => ['api'],'prefix' => 'user'], static function() {
   Route::post('/login', 'AuthenticationController@login');
   Route::post('/register', 'AuthenticationController@register');
   Route::post('/me', 'AuthenticationController@me');
-  Route::group(['middleware' => 'jwt.verify'], static function( $router){
+  Route::group(['middleware' => 'jwt.verify'], static function(){
     Route::post('/logout', 'AuthenticationController@logout');
     Route::post('/refresh', 'AuthenticationController@refresh');
     Route::get('/detail', 'AuthenticationController@detail'); });

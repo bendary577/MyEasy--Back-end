@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\APIs;
+namespace App\Http\Controllers\APIs;
 
 use Barryvdh\DomPDF\Facade as PDF;
 use Illuminate\Http\Request;

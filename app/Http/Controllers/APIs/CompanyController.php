@@ -1,16 +1,16 @@
 <?php
 
-namespace App\Http\APIs;
+namespace App\Http\Controllers\APIs;
 
 use Illuminate\Http\Request;
-use App\Models\Company;
+use App\Models\CompanyProfile;
 use App\Http\Controllers\Controller;
 
 class CompanyController extends Controller
 {
     public function index()
     {
-        return response()->json(Company::get(), 200);
+        return response()->json(CompanyProfile::get(), 200);
     }
 
     public function create()

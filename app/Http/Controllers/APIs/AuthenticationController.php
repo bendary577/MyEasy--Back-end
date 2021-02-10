@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\APIs;
+namespace App\Http\Controllers\APIs;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Contracts\Auth\Guard;
@@ -10,8 +10,8 @@ use App\Models\User;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
 use Tymon\JWTAuth\Facades\JWTAuth;
-use Tymon\JWTAuth\Exceptions\JWTException;
-use Symfony\Component\HttpFoundation\Response;
+use Illuminate\Support\Facades\Auth;
+
 
 class AuthenticationController extends Controller
 {
@@ -20,9 +20,12 @@ class AuthenticationController extends Controller
      *
      * @return void
      */
+    private $guard;
+
     public function __construct()
     {
         $this->middleware('auth:api', ['except' => ['login']]);
+        $this->guard = "api";
     }
 
      /* -------------------------------- register ------------------------------------------ */
@@ -49,21 +52,22 @@ class AuthenticationController extends Controller
         return response()->json(compact('user', 'token'), 201);
     }
 
-    /* -------------------------------- login ------------------------------------------ */
+    /**
+     * Get a JWT token via given credentials.
+     *
+     * @param Request $request
+     *
+     * @return JsonResponse
+     */
     public function login(Request $request): JsonResponse
     {
         $credentials = $request->only('email', 'password');
 
-        try {
-            //returns a token if found this credentials are found in database
-            if (!$token = JWTAuth::attempt($credentials)) {
-                return response()->json(['error' => 'invalid_credentials'], 400);
-            }
-        } catch (JWTException $e) {
-            return response()->json(['error' => 'could_not_create_token'], 500);
+        if ($token = auth($this->guard)->attempt($credentials)) {
+            return $this->respondWithToken($token);
         }
 
-        return response()->json(compact('token'));
+        return response()->json(['error' => 'Unauthorized'], 401);
     }
 
     /**
@@ -71,31 +75,20 @@ class AuthenticationController extends Controller
      *
      * @return JsonResponse
      */
-    public function me()
+    public function me(): JsonResponse
     {
-        return response()->json($this->guard()->user());
+        return response()->json(auth($this->guard)->user());
     }
 
-     /* -------------------------------- logout ------------------------------------------ */
-    public function logout(Request $request): JsonResponse
+    /**
+     * Log the user out (Invalidate the token)
+     *
+     * @return JsonResponse
+     */
+    public function logout(): JsonResponse
     {
-        $this->validate($request, [
-            'token' => 'required'
-        ]);
-
-        try {
-            JWTAuth::invalidate($request->token);
-
-            return response()->json([
-                'success' => true,
-                'message' => 'User logged out successfully'
-            ]);
-        } catch (JWTException $exception) {
-            return response()->json([
-                'success' => false,
-                'message' => 'Sorry, the user cannot be logged out'
-            ], Response::HTTP_INTERNAL_SERVER_ERROR);
-        }
+        auth($this->guard)->logout();
+        return response()->json(['message' => 'Successfully logged out']);
     }
 
      /* -------------------------------- getUser ------------------------------------------ */
@@ -127,7 +120,7 @@ class AuthenticationController extends Controller
      */
     public function refresh(): JsonResponse
     {
-        return $this->respondWithToken($this->guard()->refresh());
+        return $this->respondWithToken(auth($this->guard)->refresh());
     }
 
     /**
@@ -142,7 +135,7 @@ class AuthenticationController extends Controller
         return response()->json([
             'access_token' => $token,
             'token_type' => 'bearer',
-            'expires_in' => $this->guard()->factory()->getTTL() * 60
+            'expires_in' => auth($this->guard)->factory()->getTTL() * 60
         ]);
     }
 
