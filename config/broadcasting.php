@@ -36,8 +36,8 @@ return [
             'secret' => env('b600a4dc4830e9679489'),
             'app_id' => env('1152480'),
             'options' => [
-                'cluster' => 'mt1',
-                'useTLS' => true,
+                /*'cluster' => 'us2',
+                'useTLS' => true, */
             ],
         ],
 

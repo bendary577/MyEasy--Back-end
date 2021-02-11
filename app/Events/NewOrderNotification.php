@@ -14,8 +14,7 @@ class NewOrderNotification
 {
     use Dispatchable, InteractsWithSockets, SerializesModels;
 
-    public $customer_name;
-    public $created_at;
+    public $message;
 
     /**
      * Create a new event instance.
@@ -24,7 +23,7 @@ class NewOrderNotification
      */
     public function __construct($data)
     {
-        $this->$customer_name = $data['customer_name'];
+        $this->message  = $data['customer_name'] . "made a new order!";
     }
 
     /**
@@ -34,6 +33,11 @@ class NewOrderNotification
      */
     public function broadcastOn()
     {
-        return new Channel('new_order_notification');
+        return ['new_order_notification'];
+    }
+
+    public function broadcastAs(): string
+    {
+        return 'new_order_notification_event';
     }
 }

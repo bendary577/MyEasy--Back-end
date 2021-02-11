@@ -22,8 +22,9 @@ class OrderTableSeeder extends Seeder
                 'seller_name' => $faker->name,
                 'price' => $faker->randomNumber(),
                 'status' => 'closed',
-                'customer_id' => '3',
-                'seller_id' => '2',
+                'customer_id' => 3,
+                'seller_id' => 2,
+                'product_id' => 1
             ]);
         }
     }

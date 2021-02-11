@@ -2,10 +2,12 @@
 
 namespace App\Http\Controllers\APIs;
 
+use App\Models\User;
 use Illuminate\Http\Request;
 use App\Models\Product;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Validator;
+use Tymon\JWTAuth\Facades\JWTAuth;
 
 class ProductController extends Controller
 {
@@ -79,6 +81,17 @@ class ProductController extends Controller
             return response()->json(["message" => "Product not found"], 404);
           }
     }
+
+    /* ------------------------------------ rate a product -------------------------------------- */
+    public function rate(User $user){
+
+    }
+
+
+
+
+
+
 
 }
 

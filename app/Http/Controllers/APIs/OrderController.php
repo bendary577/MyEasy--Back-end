@@ -24,7 +24,7 @@ class OrderController extends Controller
         $data = $request->all();
         //validator or request validator
         $validator = Validator::make($data, [
-            'name' => 'required|max:255',
+            'customer_name' => 'required|max:255',
         ]);
 
         if ($validator->fails()) {
@@ -35,7 +35,6 @@ class OrderController extends Controller
 
         $date = [
             'customer_name' => $request->customer_name,
-            'created_at' => $request->created_at,
         ];
 
         event(new NewOrderNotification($data));

@@ -24,6 +24,8 @@ class CreateOrdersTable extends Migration
             $table->foreign('customer_id')->references('id')->on('customer_profiles');
             $table->unsignedbigInteger('seller_id');
             $table->foreign('seller_id')->references('id')->on('seller_profiles');
+            $table->unsignedbigInteger('product_id');
+            $table->foreign('product_id')->references('id')->on('products');
         });
     }
 
