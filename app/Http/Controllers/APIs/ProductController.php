@@ -7,14 +7,13 @@ use Illuminate\Http\Request;
 use App\Models\Product;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Validator;
-use Tymon\JWTAuth\Facades\JWTAuth;
 
 class ProductController extends Controller
 {
     /* -------------------------------------------get all products ------------------------------------------------ */
     public function getAll()
     {
-        $product = Product::get()->toJson();
+        $product = Product::query()->orderByDesc('created_at')->paginate(6)->toJson();
         return response($product, 200);
     }
 
