@@ -44,9 +44,9 @@ class ProductController extends Controller
         if (Product::where('id', $id)->exists()) {
             $product = Product::where('id', $id)->get()->toJson();
             return response($product, 200);
-          } else {
+        } else {
             return response()->json(["message" => "Product not found"], 404);
-          }
+        }
     }
 
     /* -------------------------------------update one product -------------------------------------- */
@@ -64,9 +64,9 @@ class ProductController extends Controller
             $product->save();
 
             return response()->json(["message" => "Product updated successfully"], 200);
-            } else {
+        } else {
             return response()->json(["message" => "Product not found"], 404);
-            }
+        }
     }
 
     /* -------------------------------------delete product -------------------------------------- */

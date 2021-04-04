@@ -33,4 +33,9 @@ class Store extends Model
         return $this->belongsTo(CompanyProfile::class);
     }
 
+    public function category(): \Illuminate\Database\Eloquent\Relations\HasOne
+    {
+        return $this->hasOne(Category::class);
+    }
+
 }
