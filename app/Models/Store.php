@@ -33,9 +33,9 @@ class Store extends Model
         return $this->belongsTo(CompanyProfile::class);
     }
 
-    public function category(): \Illuminate\Database\Eloquent\Relations\HasOne
+    public function category(): \Illuminate\Database\Eloquent\Relations\HasMany
     {
-        return $this->hasOne(Category::class);
+        return $this->hasMany(Category::class);
     }
 
 }

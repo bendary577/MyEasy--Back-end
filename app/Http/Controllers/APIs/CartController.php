@@ -69,6 +69,12 @@ class CartController extends Controller
      */
     public function destroy($customer, $store, $product)
     {
-        //
+        if(Cart::where('id', $id)->exists()) {
+            $cart = Cart::find($id);
+            $cart->delete();
+            return response()->json(["message" => "Cart record deleted"], 202);
+          } else {
+            return response()->json(["message" => "Cart not found"], 404);
+          }
     }
 }
