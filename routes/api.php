@@ -113,9 +113,22 @@ Route::group(['prefix'=>'orders'], function () {
     Route::delete('/{id}', 'OrderController@delete');               //http://127.0.0.1:8000/api/orders/1
 });
 
+/* ---------------------- Categories endpoint --------------------- */
+Route::group(['prefix'=>'category'], function () {
+    Route::get('/', 'CategoryController@getAll');                      //http://127.0.0.1:8000/api/Categories/
+    Route::get('/{id}', 'CategoryController@getOne');                  //http://127.0.0.1:8000/api/Categories/1
+    Route::post('/', 'CategoryController@create');                     //http://127.0.0.1:8000/api/Categories/
+    Route::put('/{id}', 'CategoryController@update');                  //http://127.0.0.1:8000/api/Categories/1
+    Route::delete('/{id}', 'CategoryController@delete');               //http://127.0.0.1:8000/api/categories/1
+});
 
-
-
+/* ---------------------- Caets endpoint --------------------- */
+Route::group(['prefix'=>'cart'], function () {
+    Route::get('/', 'CartController@getAll');                      //http://127.0.0.1:8000/api/Cart/
+    Route::post('/', 'CartController@create');                     //http://127.0.0.1:8000/api/Cart/
+    Route::put('/{id}', 'CartController@update');                  //http://127.0.0.1:8000/api/Cart/1
+    Route::delete('/{id}', 'CartController@delete');               //http://127.0.0.1:8000/api/Cart/1
+});
 
 /* ---------------------- pdf --------------------- */
 Route::get('pdf', 'PdfController@download');
