@@ -20,7 +20,8 @@ class CreateStoresTable extends Migration
             $table->integer('ratings_number');
             $table->enum('categories', ['men', 'electric']);
             $table->timestamps();
-            $table->unsignedbigInteger('owner');
+            $table->unsignedbigInteger('s_owner');
+            $table->unsignedbigInteger('c_owner');
             $table->foreign('s_owner')->references('id')->on('seller_profiles');
             $table->foreign('c_owner')->references('id')->on('company_profiles');
         });

@@ -1,10 +1,11 @@
 <?php
 
-namespace App\Http\Controllers\APIs;
+namespace App\Http\Controllers\APIs\V1\Rest\Stores;
 
+use App\Http\Controllers\Controller;
 use Barryvdh\DomPDF\Facade as PDF;
 use Illuminate\Http\Request;
-use App\Http\Controllers\Controller;
+
 
 class PdfController extends Controller
 {

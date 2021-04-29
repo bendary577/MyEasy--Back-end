@@ -1,10 +1,10 @@
 <?php
 
-namespace App\Http\Controllers\APIs;
+namespace App\Http\Controllers\APIs\V1\Rest\Stores;
 
+use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\Invoice;
-use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Validator;
 
 class InvoiceController extends Controller

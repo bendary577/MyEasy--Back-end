@@ -1,31 +1,22 @@
 <?php
 
-namespace App\Http\Controllers\APIs;
+namespace App\Http\Controllers\APIs\V1\Rest\Accounts;
 
+use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\Notification;
-use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Validator;
 
 class NotificationController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
+
     public function getAll()
     {
         $noti = Notification::get()->toJson();
         return response($noti, 200);
     }
 
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
+
     public function Create(Request $request)
     {
         $data = $request->all();
@@ -42,12 +33,7 @@ class NotificationController extends Controller
         return response()->json(["message" => "Notification record created"], 201);
     }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
+
     public function getOne($id)
     {
         if (Notification::where('id', $id)->exists()) {
@@ -58,14 +44,8 @@ class NotificationController extends Controller
         }
     }
 
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, $id)
+
+    public function update($request, $id)
     {
         if (Notification::where('id', $id)->exists()) {
             $noti = Notification::find($id);
@@ -78,12 +58,7 @@ class NotificationController extends Controller
         }
     }
 
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
+
     public function destroy($id)
     {
         if(Notification::where('id', $id)->exists()) {

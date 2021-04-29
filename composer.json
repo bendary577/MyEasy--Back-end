@@ -16,9 +16,10 @@
         "guzzlehttp/guzzle": "^7.2",
         "illuminate/auth": "^8.27",
         "laravel/framework": "^8.12",
+        "laravel/passport": "^10.1",
         "laravel/tinker": "^2.5",
-        "pusher/pusher-php-server": "~4.0",
-        "tymon/jwt-auth": "^1.0.0-rc.2"
+        "lcobucci/jwt": "^3.4",
+        "pusher/pusher-php-server": "~4.0"
     },
     "require-dev": {
         "facade/ignition": "^2.5",
@@ -35,7 +36,9 @@
     },
     "extra": {
         "laravel": {
-            "dont-discover": []
+            "dont-discover": [
+                "laravel/dusk"
+            ]
         }
     },
     "autoload": {
