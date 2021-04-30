@@ -1,6 +1,7 @@
 <?php
 
-namespace App\Http\Controllers\APIs;
+namespace App\Http\Controllers\APIs\V1\Rest\Profiles;
+
 
 use App\Http\Controllers\Controller;
 use App\Models\AdminProfile;

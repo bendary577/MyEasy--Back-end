@@ -1,10 +1,10 @@
 <?php
 
-namespace App\Http\Controllers\APIs;
+namespace App\Http\Controllers\APIs\V1\Rest\Profiles;
 
+use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\CompanyProfile;
-use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Validator;
 
 class CompanyProfileController extends Controller

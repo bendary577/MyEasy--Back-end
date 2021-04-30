@@ -1,31 +1,22 @@
 <?php
 
-namespace App\Http\Controllers\APIs;
+namespace App\Http\Controllers\APIs\V1\Rest\Accounts;
 
-use Illuminate\Http\Request;
-use App\Models\Ratings;
 use App\Http\Controllers\Controller;
+use App\Models\Rating;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 
 class RatingController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
+
     public function getAll()
     {
         $rating = Rating::get()->toJson();
         return response($rating, 200);
     }
 
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
+
     public function Create(Request $request)
     {
         $data = $request->all();
@@ -42,12 +33,7 @@ class RatingController extends Controller
         return response()->json(["message" => "Rating record created"], 201);
     }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
+
     public function getOne($id)
     {
         if (Rating::where('id', $id)->exists()) {
@@ -58,13 +44,7 @@ class RatingController extends Controller
         }
     }
 
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
+
     public function update(Request $request, $id)
     {
         if (Rating::where('id', $id)->exists()) {
@@ -78,12 +58,7 @@ class RatingController extends Controller
         }
     }
 
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
+
     public function destroy($id)
     {
         if(Rating::where('id', $id)->exists()) {

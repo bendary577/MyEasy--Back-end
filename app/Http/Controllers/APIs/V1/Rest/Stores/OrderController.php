@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers\APIs;
+namespace App\Http\Controllers\APIs\V1\Rest\Stores;
 
 use App\Events\NewOrderNotification;
 use App\Http\Controllers\Controller;

@@ -1,11 +1,10 @@
 <?php
 
-namespace App\Http\Controllers\APIs;
+namespace App\Http\Controllers\APIs\V1\Rest\Profiles;
 
+use App\Http\Controllers\Controller;
 use App\Models\SellerProfile;
 use Illuminate\Http\Request;
-use App\Models\Seller;
-use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Validator;
 
 class SellerProfileController extends Controller

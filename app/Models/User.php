@@ -7,11 +7,11 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\MorphTo;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
-use Tymon\JWTAuth\Contracts\JWTSubject;
+use Laravel\Passport\HasApiTokens;
 
-class User extends Authenticatable implements JWTSubject, MustVerifyEmail
+class User extends Authenticatable implements MustVerifyEmail
 {
-    use HasFactory, Notifiable;
+    use HasApiTokens, HasFactory, Notifiable;
 
     protected $fillable = [
         'first_name',
@@ -67,14 +67,9 @@ class User extends Authenticatable implements JWTSubject, MustVerifyEmail
       return $this->profile_type == 'App\Models\CompanyProfile';
     }
 
-    /* ------------------------------- jwt authentication ---------------------------- */
-    public function getJWTIdentifier()             //return the JWTIdentifier
+    public function sendPasswordResetNotification($token)
     {
-      return $this->getKey();
+        $this->notify(new \App\Notifications\MailResetPasswordNotification($token));
     }
 
-    public function getJWTCustomClaims(): array           //used in generating the JWT token
-    {
-      return [];
-    }
 }
