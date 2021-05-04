@@ -10,13 +10,16 @@
     "require": {
         "php": "^7.3|^8.0",
         "ably/ably-php": "^1.1",
+        "algolia/algoliasearch-client-php": "^3.0",
         "barryvdh/laravel-dompdf": "^0.9.0",
+        "elasticsearch/elasticsearch": "^7.12",
         "fideloper/proxy": "^4.4",
         "fruitcake/laravel-cors": "^2.0",
         "guzzlehttp/guzzle": "^7.2",
         "illuminate/auth": "^8.27",
         "laravel/framework": "^8.12",
         "laravel/passport": "^10.1",
+        "laravel/scout": "^9.0",
         "laravel/tinker": "^2.5",
         "lcobucci/jwt": "^3.4",
         "pusher/pusher-php-server": "~4.0"

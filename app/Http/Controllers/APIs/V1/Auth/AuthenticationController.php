@@ -7,6 +7,7 @@ use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Str;
+use Validator;
 
 class AuthenticationController extends Controller
 {
@@ -14,17 +15,20 @@ class AuthenticationController extends Controller
     public function register(Request $request)
     {
         $validatedData = $request->validate([
-            'name' => 'required|string|max:55',
+            'first_name' => 'required|string|max:55',
+            'second_name' => 'required|string|max:55',
             'email' => 'email|required|string|max:255|unique:users',
             'password' => 'required|string|min:6|confirmed',
             'type' => 'integer',
         ]);
 
+        //return $validatedData;
+        
         if ($validatedData->fails())
         {
             return response(['errors'=>$validatedData->errors()->all()], 422);
         }
-
+        
         $request['password'] = Hash::make($request->password);
         $request['remember_token'] = Str::random(10);
         $request['type'] = $request['type'] ? $request['type']  : 0;

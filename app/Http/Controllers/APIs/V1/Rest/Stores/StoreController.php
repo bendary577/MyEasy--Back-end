@@ -71,4 +71,19 @@ class StoreController extends Controller
             return response()->json(["message" => "store not found"], 404);
         }
     }
+    
+    /* -------------------------------------search store -------------------------------------- */
+    public function search(Request $request): \Illuminate\Http\JsonResponse
+    {
+        $search = $request->name;
+        
+        //return response()->json($search);
+
+        $store = Store::query()
+                    ->where("name", "LIKE", "%{$search}%")
+                    ->get();
+        
+
+        return response()->json($store);
+    }
 }
