@@ -162,6 +162,9 @@ return [
         Illuminate\Validation\ValidationServiceProvider::class,
         Illuminate\View\ViewServiceProvider::class,
         Barryvdh\DomPDF\ServiceProvider::class,
+        //Elasticquent\ElasticquentServiceProvider::class,
+        Laravel\Scout\ScoutServiceProvider::class,
+        //ScoutEngines\Elasticsearch\ElasticsearchProvider::class,
 
         /*
          * Package Service Providers...
