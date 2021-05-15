@@ -164,7 +164,7 @@ return [
         Barryvdh\DomPDF\ServiceProvider::class,
         //Elasticquent\ElasticquentServiceProvider::class,
         Laravel\Scout\ScoutServiceProvider::class,
-        //ScoutEngines\Elasticsearch\ElasticsearchProvider::class,
+        ScoutEngines\Elasticsearch\ElasticsearchProvider::class,,
 
         /*
          * Package Service Providers...
