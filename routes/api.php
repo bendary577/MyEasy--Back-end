@@ -78,11 +78,9 @@ Route::group(['prefix' => 'stores'], function () {
     Route::put('/{id}', 'Rest\Stores\StoreController@update');                  //http://127.0.0.1:8000/api/stores/1
     Route::delete('/{id}', 'Rest\Stores\StoreController@delete');               //http://127.0.0.1:8000/api/stores/1
 });
-<<<<<<< HEAD
 
 Route::post('stores/search', 'Rest\Stores\StoreController@search');               //http://127.0.0.1:8000/api/stores/search
-=======
->>>>>>> 997003b418fe494be08dc1449f19e563d4d4a9ae
+
 
 /* ---------------------- invoices endpoint --------------------- */
 Route::group(['prefix'=>'invoices'], function () {
