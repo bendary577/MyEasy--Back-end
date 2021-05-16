@@ -14,7 +14,6 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-
 //------------------------ public apis --------------------------
 Route::group(['middleware' => ['cors', 'json.response']], function () {
     Route::post('/login', 'Auth\AuthenticationController@login')->name('login.api');
@@ -31,6 +30,7 @@ Route::group(['middleware' => ['auth:api', 'jwt.verify']] , function () {
         Route::get('/me', 'Auth\AuthenticationController@details');              //http://127.0.0.1:8000/api/user/me
         Route::get('/activate/{token}', 'Auth\AuthenticationController@activate');
     });
+
 
     /*--------------------------- reset password api endpoints -------------*/
     Route::group(['prefix' => 'password'], function () {

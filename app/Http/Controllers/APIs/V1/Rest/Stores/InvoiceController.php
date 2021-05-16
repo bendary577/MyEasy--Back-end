@@ -9,6 +9,14 @@ use Illuminate\Support\Facades\Validator;
 
 class InvoiceController extends Controller
 {
+    public function __construct()
+    {
+        $this->middleware('permission:create invoice|list invoices|edit invoice|delete invoice', ['only' => ['getAll','getOne']]);
+        $this->middleware('permission:create invoice', ['only' => ['create']]);
+        $this->middleware('permission:edit invoice', ['only' => ['update']]);
+        $this->middleware('permission:delete invoice', ['only' => ['delete']]);
+    }
+
     /* -------------------------------------------get all Invoices ------------------------------------------------ */
     public function getAll()
     {

@@ -10,6 +10,15 @@ use Illuminate\Support\Facades\Validator;
 
 class OrderController extends Controller
 {
+
+    public function __construct()
+    {
+        $this->middleware('permission:create order|list orders|edit order|delete order', ['only' => ['getAll','getOne']]);
+        $this->middleware('permission:create order', ['only' => ['create']]);
+        $this->middleware('permission:edit order', ['only' => ['update']]);
+        $this->middleware('permission:delete order', ['only' => ['delete']]);
+    }
+
     /* -------------------------------------------get all Orders ------------------------------------------------ */
     public function getAll()
     {

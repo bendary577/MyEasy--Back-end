@@ -9,6 +9,15 @@ use Illuminate\Support\Facades\Validator;
 
 class StoreController extends Controller
 {
+
+    public function __construct()
+    {
+        $this->middleware('permission:create store|list stores|edit store|delete store', ['only' => ['getAll','getOne']]);
+        $this->middleware('permission:create store', ['only' => ['create']]);
+        $this->middleware('permission:edit store', ['only' => ['update']]);
+        $this->middleware('permission:delete store', ['only' => ['delete']]);
+    }
+
     /* -------------------------------------------get all store ------------------------------------------------ */
     public function getAll()
     {
@@ -19,8 +28,8 @@ class StoreController extends Controller
     /* ------------------------------------- create an store -------------------------------------- */
     public function create(Request $request): \Illuminate\Http\JsonResponse
     {
-
         $data = $request->all();
+
         //validator or request validator
         $validator = Validator::make($data, [
             'name' => 'required|max:255',
@@ -71,18 +80,18 @@ class StoreController extends Controller
             return response()->json(["message" => "store not found"], 404);
         }
     }
-    
+
     /* -------------------------------------search store -------------------------------------- */
     public function search(Request $request): \Illuminate\Http\JsonResponse
     {
         $search = $request->name;
-        
+
         //return response()->json($search);
 
         $store = Store::query()
                     ->where("name", "LIKE", "%{$search}%")
                     ->get();
-        
+
 
         return response()->json($store);
     }

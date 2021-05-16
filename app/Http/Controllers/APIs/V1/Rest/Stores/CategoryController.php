@@ -9,6 +9,13 @@ use Illuminate\Support\Facades\Validator;
 
 class CategoryController extends Controller
 {
+    public function __construct()
+    {
+        $this->middleware('permission:create category|list categories|edit category|delete category', ['only' => ['getAll','getOne']]);
+        $this->middleware('permission:create category', ['only' => ['create']]);
+        $this->middleware('permission:edit category', ['only' => ['update']]);
+        $this->middleware('permission:delete category', ['only' => ['delete']]);
+    }
 
     public function getAll()
     {

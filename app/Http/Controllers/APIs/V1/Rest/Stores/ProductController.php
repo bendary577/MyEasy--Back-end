@@ -10,6 +10,14 @@ use Illuminate\Support\Facades\Validator;
 
 class ProductController extends Controller
 {
+    public function __construct()
+    {
+        $this->middleware('permission:create product|list products|edit product|delete product', ['only' => ['getAll','getOne']]);
+        $this->middleware('permission:create product', ['only' => ['create']]);
+        $this->middleware('permission:edit product', ['only' => ['update']]);
+        $this->middleware('permission:delete product', ['only' => ['delete']]);
+    }
+
     /* -------------------------------------------get all products ------------------------------------------------ */
     public function getAll()
     {
