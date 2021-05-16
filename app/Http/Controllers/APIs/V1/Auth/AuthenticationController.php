@@ -17,10 +17,13 @@ use GuzzleHttp\Client;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Validator;
 use Laravel\Passport\Client as OClient;
 use Laravolt\Avatar\Avatar;
+use Spatie\Permission\Models\Permission;
+use Spatie\Permission\Models\Role;
 
 class AuthenticationController extends Controller
 {
@@ -30,6 +33,18 @@ class AuthenticationController extends Controller
     public $unauthorizedCode = 401;
     public $unprocessableCode = 422;
     public $notFoundCode = 404;
+
+    public $admin_permissions = ['create category','list categories','edit category', 'delete category',
+                                 'list stores','delete store', 'list products', 'list orders', 'edit complaint',
+                                 'delete complaint', 'list complaints'];
+
+    public $seller_permissions = ['list categories', 'create store','list stores','edit store', 'delete store', 'list products',
+                                  'list orders', 'create product', 'list products', 'edit product', 'delete product', 'list orders',
+                                  'edit order', 'delete order', 'create invoice', 'list invoices', 'edit invoice', 'delete invoice'];
+
+    public $customer_permissions = ['list categories', 'list stores','rate store', 'list products','rate product', 'create order',
+                                    'create order','list orders','edit order', 'delete order', 'add to cart', 'list carts', 'edit cart',
+                                    'remove from cart','create complaint', 'list complaints', 'edit complaint'];
 
     //----------------------------------- REGISTER -------------------------
     public function register(Request $request)
@@ -47,7 +62,7 @@ class AuthenticationController extends Controller
         //check data validation
         if ($validatedData->fails())
         {
-            return response(['errors'=>$validatedData->errors()->all()], $this->unauthorizedCode);
+            return response()->json(['message'=>$validatedData->errors()->all()], $this->unauthorizedCode);
         }
 
         $request['password'] = Hash::make($request->password);
@@ -73,15 +88,33 @@ class AuthenticationController extends Controller
         $user->activation_token = Str::random(60);
 
         if($request['type'] == 0){
+            //create admin profile
             $profile = new AdminProfile;
             $profile->admin_name = $request['first_name'];
             $profile->user()->save($user);
+
+            //create admin roles and permissions
+            $role = Role::create(['name' => 'admin']);
+            $user->assignRole($role);
+            foreach ($this->admin_permissions as $admin_permission) {
+                $permission = Permission::create(['name' => $admin_permission]);
+                $role->givePermissionTo($permission);
+            }
         }else if($request['type'] == 1){
+            //create customer profile
             $profile = new CustomerProfile;
             $profile->gender = $request['gender'];
             $profile->birth_date = $request['birth_date'];
             $profile->user()->save($user);
+            //create customer roles and permissions
+            $role = Role::create(['name' => 'customer']);
+            $user->assignRole($role);
+            foreach ($this->customer_permissions as $customer_permission) {
+                $permission = Permission::create(['name' => $customer_permission]);
+                $role->givePermissionTo($permission);
+            }
         }else if($request['type'] == 2){
+            //create seller profile
             $profile = new SellerProfile;
             $profile->gender = $request['gender'];
             $profile->specialization = $request['specialization'];
@@ -89,13 +122,28 @@ class AuthenticationController extends Controller
             $profile->customers_number = 0;
             $profile->orders_number = 0;
             $profile->user()->save($user);
+            //create seller roles and permissions
+            $role = Role::create(['name' => 'seller']);
+            $user->assignRole($role);
+            foreach ($this->seller_permissions as $seller_permission) {
+                $permission = Permission::create(['name' => $seller_permission]);
+                $role->givePermissionTo($permission);
+            }
         }else{
+            //create company profile
             $profile = new CompanyProfile;
             $profile->specialization = $request['specialization'];
             $profile->has_store = false;
             $profile->customers_number = 0;
             $profile->orders_number = 0;
             $profile->user()->save($user);
+            //create seller roles and permissions
+            $role = Role::create(['name' => 'seller']);
+            $user->assignRole($role);
+            foreach ($this->seller_permissions as $seller_permission) {
+                $permission = Permission::create(['name' => $seller_permission]);
+                $role->givePermissionTo($permission);
+            }
         }
 
         //return jwt access token
@@ -104,6 +152,7 @@ class AuthenticationController extends Controller
 
         $user->save();
 
+        //store avatar temporariy in project storage
         $avatar = Avatar::create($user->name)->getImageObject()->encode('png');
         Storage::put('avatars/'.$user->id.'/avatar.png', (string) $avatar);
 
@@ -127,7 +176,7 @@ class AuthenticationController extends Controller
         $user->account_activated = true;
         $user->activation_token = '';
         $user->save();
-        return response(['message'=>"account was activated successfully", 'user'=>$user], $this->createdCode);
+        return response()->json(['message'=>"account was activated successfully", 'user'=>$user], $this->createdCode);
     }
 
     //----------------------------------------- LOGIN ------------------------
@@ -140,14 +189,14 @@ class AuthenticationController extends Controller
 
         if ($validator->fails())
         {
-            return response(['errors'=>$validator->errors()->all()], $this->unprocessableCode);
+            return response()->json(['errors'=>$validator->errors()->all()], $this->unprocessableCode);
         }
 
         $user = User::where('email', $request->email)->first();
 
         if ($user) {
             if($user->is_blocked){
-                return response(['message'=>"sorry, your account is blocked"], $this->unprocessableCode);
+                return response()->json(['message'=>"sorry, your account is blocked"], $this->unprocessableCode);
             }else if (Hash::check($request->password, $user->password)) {
                 //$token = $user->createToken('accessToken')->accessToken;
                 //$response = ['message' =>"user has returned successfully", 'token' => $token];
@@ -155,12 +204,10 @@ class AuthenticationController extends Controller
                 $oClient = OClient::where('password_client', 1)->first();
                 return $this->getTokenAndRefreshToken($oClient, request('email'), request('password'));
             } else {
-                $response = ["message" => "Password mismatch"];
-                return response($response, $this->unauthorizedCode);
+                return response()->json(["message" => "Password mismatch"], $this->unauthorizedCode);
             }
         } else {
-            $response = ["message" =>'User does not exist'];
-            return response($response, $this->unprocessableCode);
+            return response()->json(["message" =>'User does not exist'], $this->unprocessableCode);
         }
     }
 
@@ -169,8 +216,7 @@ class AuthenticationController extends Controller
     public function logout (Request $request) {
         $token = $request->user()->token();
         $token->revoke();
-        $response = ['message' => 'You have been successfully logged out!'];
-        return response($response, $this->successCode);
+        return response()->json(['message' => 'You have been successfully logged out!'], $this->successCode);
     }
 
     //-------------------------------------- DETAILS ------------------------------

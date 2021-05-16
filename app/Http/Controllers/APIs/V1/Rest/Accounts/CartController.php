@@ -10,6 +10,14 @@ use Illuminate\Support\Facades\Validator;
 class CartController extends Controller
 {
 
+    public function __construct()
+    {
+        $this->middleware('permission:add to cart|list carts|edit cart|remove from cart', ['only' => ['getAll','getOne']]);
+        $this->middleware('permission:add to cart', ['only' => ['create']]);
+        $this->middleware('permission:edit cart', ['only' => ['update']]);
+        $this->middleware('permission:remove from cart', ['only' => ['delete']]);
+    }
+
     public function getAll($id)
     {
         $carts = Cart::query()->where('customer', $id)->orderByDesc('created_at')->paginate(6)->toJson();

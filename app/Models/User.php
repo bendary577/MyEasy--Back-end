@@ -8,6 +8,7 @@ use Illuminate\Database\Eloquent\Relations\MorphTo;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
+use Illuminate\Support\Facades\Storage;
 use Laravel\Passport\HasApiTokens;
 use Spatie\Permission\Traits\HasRoles;
 
@@ -44,6 +45,8 @@ class User extends Authenticatable implements MustVerifyEmail
         'email_verified_at' => 'datetime',
     ];
 
+    protected $appends = ['avatar_url'];
+
     /* -------------------------------- profiles ----------------------------------- */
 
     protected $with = ['profile'];
@@ -75,6 +78,12 @@ class User extends Authenticatable implements MustVerifyEmail
     public function getHasCompanyProfileAttribute(): bool
     {
       return $this->profile_type == 'App\Models\CompanyProfile';
+    }
+
+    /*---------------------- get avatar url of user -------------------------------*/
+    public function getAvatarUrlAttribute()
+    {
+        return Storage::url('avatars/'.$this->id.'/'.$this->avatar);
     }
 
     public function sendPasswordResetNotification($token)
