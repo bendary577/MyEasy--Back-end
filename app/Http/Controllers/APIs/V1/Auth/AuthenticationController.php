@@ -169,9 +169,7 @@ class AuthenticationController extends Controller
         $user = User::where('activation_token', $token)->first();
 
         if (!$user) {
-            return response()->json([
-                'message' => 'This activation token is invalid.'
-            ], $this->notFoundCode);
+            return response()->json(['message' => 'This activation token is invalid.'], $this->notFoundCode);
         }
         $user->account_activated = true;
         $user->activation_token = '';
