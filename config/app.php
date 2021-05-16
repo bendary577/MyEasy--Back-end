@@ -163,8 +163,6 @@ return [
         Illuminate\View\ViewServiceProvider::class,
         Barryvdh\DomPDF\ServiceProvider::class,
         Laravel\Passport\PassportServiceProvider::class,
-        Laravel\Scout\ScoutServiceProvider::class,
-        //ScoutEngines\Elasticsearch\ElasticsearchProvider::class,
         Spatie\Permission\PermissionServiceProvider::class,
 
         /*
