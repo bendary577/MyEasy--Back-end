@@ -10,8 +10,6 @@ class Store extends Model
 {
     use HasFactory, Searchable;
 
-    
-
     protected $fillable = [
         'name',
         'specilization',

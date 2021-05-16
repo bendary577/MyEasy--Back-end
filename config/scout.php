@@ -137,8 +137,8 @@ return [
     'elasticsearch' => [
         'index' => env('ELASTICSEARCH_INDEX', 'laravel'),
         'config' => [
-                      'hosts' => [ env('ELASTICSEARCH_HOST', 'localhost') ]
-                    ],
-         ],
+            'hosts' => [env('ELASTICSEARCH_HOST', 'localhost')],
+        ],
+    ],
 
 ];
