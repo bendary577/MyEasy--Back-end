@@ -5,13 +5,15 @@ namespace App\Models;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\MorphTo;
+use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Passport\HasApiTokens;
+use Spatie\Permission\Traits\HasRoles;
 
 class User extends Authenticatable implements MustVerifyEmail
 {
-    use HasApiTokens, HasFactory, Notifiable;
+    use HasApiTokens, HasFactory, Notifiable, HasRoles, SoftDeletes;
 
     protected $fillable = [
         'first_name',
@@ -21,14 +23,22 @@ class User extends Authenticatable implements MustVerifyEmail
         'phone_number',
         'address',
         'zipcode',
+        'avatar',
         'photo_path',
         'bio',
+        'type',
+        'is_blocked',
+        'account_activated',
+        'activation_token'
     ];
 
     protected $hidden = [
         'password',
         'remember_token',
+        'activation_token'
     ];
+
+    protected $dates = ['deleted_at'];
 
     protected $casts = [
         'email_verified_at' => 'datetime',
@@ -69,7 +79,7 @@ class User extends Authenticatable implements MustVerifyEmail
 
     public function sendPasswordResetNotification($token)
     {
-        $this->notify(new \App\Notifications\MailResetPasswordNotification($token));
+        $this->notify(new \App\Notifications\MailResetPasswordRequestNotification($token));
     }
 
 }

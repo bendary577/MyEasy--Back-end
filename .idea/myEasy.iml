@@ -141,6 +141,11 @@
       <excludeFolder url="file://$MODULE_DIR$/vendor/ezimuel/ringphp" />
       <excludeFolder url="file://$MODULE_DIR$/vendor/ezimuel/guzzlestreams" />
       <excludeFolder url="file://$MODULE_DIR$/vendor/algolia/algoliasearch-client-php" />
+      <excludeFolder url="file://$MODULE_DIR$/vendor/tamayo/laravel-scout-elastic" />
+      <excludeFolder url="file://$MODULE_DIR$/vendor/spatie/laravel-permission" />
+      <excludeFolder url="file://$MODULE_DIR$/vendor/laravelcollective/html" />
+      <excludeFolder url="file://$MODULE_DIR$/vendor/intervention/image" />
+      <excludeFolder url="file://$MODULE_DIR$/vendor/laravolt/avatar" />
     </content>
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />

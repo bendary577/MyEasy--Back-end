@@ -7,7 +7,7 @@ use Illuminate\Bus\Queueable;
 use Illuminate\Notifications\Messages\MailMessage;
 use Illuminate\Support\Facades\Lang;
 
-class MailResetPasswordNotification extends ResetPassword
+class MailResetPasswordRequestNotification extends ResetPassword
 {
     use Queueable;
     protected $pageUrl;
@@ -47,7 +47,7 @@ class MailResetPasswordNotification extends ResetPassword
             return call_user_func(static::$toMailCallback, $notifiable, $this->token);
         }
         return (new MailMessage)
-            ->subject(Lang::getFromJson('Reset application Password'))
+            ->subject(Lang::getFromJson('Reset My Easy Password'))
             ->line(Lang::getFromJson('You are receiving this email because we received a password reset request for your account.'))
             ->action(Lang::getFromJson('Reset Password'), $this->pageUrl."?token=".$this->token)
             ->line(Lang::getFromJson('This password reset link will expire in :count minutes.', ['count' => config('auth.passwords.users.expire')]))

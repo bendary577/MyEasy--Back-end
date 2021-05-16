@@ -11,6 +11,11 @@ class CompanyProfile extends Model
 
     protected $fillable = [
         'specilization',
+        'customers_number',
+        'orders_number',
+        'badge',
+        'delivery_speed',
+        'has_store',
     ];
 
     protected $casts = [

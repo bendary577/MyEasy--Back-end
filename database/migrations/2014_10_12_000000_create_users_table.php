@@ -22,6 +22,7 @@ class CreateUsersTable extends Migration
             $table->string('phone_number');
             $table->string('address');
             $table->string('zipcode');
+            $table->string('avatar')->default('avatar.png');
             $table->string('photo_path');
             $table->string('bio');
             $table->string('availabel_money_amnt')->default('0');
@@ -30,9 +31,11 @@ class CreateUsersTable extends Migration
             $table->unsignedInteger('profile_id')->nullable();
             $table->boolean('is_blocked')->default(0);
             $table->boolean('account_activated')->default(0);
-            $table->timestamp('email_verified_at')->nullable();
+            $table->string('activation_token');
+            $table->timestamp('account_verified_at')->nullable();
             $table->rememberToken();
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 
