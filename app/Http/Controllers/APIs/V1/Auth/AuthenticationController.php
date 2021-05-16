@@ -154,7 +154,7 @@ class AuthenticationController extends Controller
 
         //store avatar temporariy in project storage
         $avatar = Avatar::create($user->name)->getImageObject()->encode('png');
-        Storage::put('avatars/'.$user->id.'/avatar.png', (string) $avatar);
+        Storage::disk('s3')->put('avatars/'.$user->id.'/', file_get_contents($avatar));
 
         $user->notify(new MailActivateAccountRequestNotification($user));
 
