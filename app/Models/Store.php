@@ -12,7 +12,6 @@ class Store extends Model
 
     protected $fillable = [
         'name',
-        'specilization',
     ];
 
     protected $casts = [
@@ -39,4 +38,19 @@ class Store extends Model
         return $this->hasMany(Category::class);
     }
 
+    public function searchableAs()
+    {
+        return 'stores';
+    }
+
+    public function toSearchableArray()
+    {
+        $array = $this->toArray();
+
+        $data = [
+            'name' => $array['name'],
+        ];
+        
+        return $data;
+    }   
 }

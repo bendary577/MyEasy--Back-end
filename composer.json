@@ -25,6 +25,8 @@
         "nesbot/carbon": "^2.48",
         "pusher/pusher-php-server": "~4.0",
         "league/flysystem-aws-s3-v3": "~1.0",
+        "laravel/scout": "^9.1",
+        "algolia/algoliasearch-client-php": "^3.0",
         "spatie/laravel-permission": "^4.0",
         "symfony/psr-http-message-bridge": "^2.1"
     },

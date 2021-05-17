@@ -99,12 +99,10 @@ Route::group(['middleware' => ['auth:api', 'jwt.verify']] , function () {
         Route::get('/', 'Rest\Stores\StoreController@getAll');                      //http://127.0.0.1:8000/api/stores/
         Route::get('/{id}', 'Rest\Stores\StoreController@getOne');                  //http://127.0.0.1:8000/api/stores/1
         Route::post('/', 'Rest\Stores\StoreController@create');                     //http://127.0.0.1:8000/api/stores/
-        Route::post('/search', 'Rest\Stores\StoreController@search');               //http://127.0.0.1:8000/api/stores/search
         Route::put('/{id}', 'Rest\Stores\StoreController@update');                  //http://127.0.0.1:8000/api/stores/1
         Route::delete('/{id}', 'Rest\Stores\StoreController@delete');               //http://127.0.0.1:8000/api/stores/1
     });
 
-    Route::post('stores/search', 'Rest\Stores\StoreController@search');               //http://127.0.0.1:8000/api/stores/search
 
 
     /* ---------------------- invoices endpoint --------------------- */
@@ -143,9 +141,10 @@ Route::group(['middleware' => ['auth:api', 'jwt.verify']] , function () {
         Route::delete('/{id}', 'Rest\Accounts\CartController@delete');               //http://127.0.0.1:8000/api/Cart/1
     });
 
-
+    
 });
 
+Route::post('/search', 'Search\SearchController@search');
 
 
 
