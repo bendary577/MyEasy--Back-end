@@ -156,6 +156,7 @@ class AuthenticationController extends Controller
         $avatar = Avatar::create($user->name)->getImageObject()->encode('png');
         Storage::disk('s3')->put('avatars/'.$user->id.'/', file_get_contents($avatar));
 
+        //request from user to activate account
         $user->notify(new MailActivateAccountRequestNotification($user));
 
         $oClient = OClient::where('password_client', 1)->first();

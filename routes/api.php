@@ -141,10 +141,10 @@ Route::group(['middleware' => ['auth:api', 'jwt.verify']] , function () {
         Route::delete('/{id}', 'Rest\Accounts\CartController@delete');               //http://127.0.0.1:8000/api/Cart/1
     });
 
-    
+    Route::post('/search', 'Search\SearchController@search');
 });
 
-Route::post('/search', 'Search\SearchController@search');
+
 
 
 
