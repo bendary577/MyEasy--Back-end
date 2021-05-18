@@ -10,34 +10,27 @@ use Illuminate\Contracts\Broadcasting\ShouldBroadcast;
 use Illuminate\Foundation\Events\Dispatchable;
 use Illuminate\Queue\SerializesModels;
 
-class NewOrderNotification
+class UserAccountActivatedEvent
 {
     use Dispatchable, InteractsWithSockets, SerializesModels;
-
-    public $message;
 
     /**
      * Create a new event instance.
      *
      * @return void
      */
-    public function __construct($data)
+    public function __construct()
     {
-        $this->message  = $data['customer_name'] . "made a new order!";
+        //
     }
 
     /**
      * Get the channels the event should broadcast on.
      *
-     * @return Channel|array
+     * @return \Illuminate\Broadcasting\Channel|array
      */
     public function broadcastOn()
     {
-        return ['new_order_notification'];
-    }
-
-    public function broadcastAs(): string
-    {
-        return 'new_order_notification_event';
+        return new PrivateChannel('channel-name');
     }
 }

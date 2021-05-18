@@ -2,6 +2,10 @@
 
 namespace App\Http\Controllers\APIs\V1\Auth;
 
+use App\Events\MailActivateAccountRequestEvent;
+use App\Events\MailCompanyRegisteredVerificationEvent;
+use App\Events\MailPasswordResetSuccessEvent;
+use App\Events\MailResetPasswordRequestEvent;
 use App\Http\Controllers\Controller;
 use App\Models\AdminProfile;
 use App\Models\CompanyProfile;
@@ -16,6 +20,7 @@ use Carbon\Carbon;
 use GuzzleHttp\Client;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Event;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
@@ -156,9 +161,13 @@ class AuthenticationController extends Controller
         $avatar = Avatar::create($user->name)->getImageObject()->encode('png');
         Storage::disk('s3')->put('avatars/'.$user->id.'/', file_get_contents($avatar));
 
-        //request from user to activate account
-        $user->notify(new MailActivateAccountRequestNotification($user));
-
+        if($user->getHasCompanyProfileAttribute()){
+            //request from company profile to send data to verify account
+            Event::fire(new MailCompanyRegisteredVerificationEvent($user));
+        }else{
+            //request from user to activate account
+            Event::fire(new MailActivateAccountRequestEvent($user));
+        }
         $oClient = OClient::where('password_client', 1)->first();
         return $this->getTokenAndRefreshToken($oClient, $user->email, $user->password);
     }
@@ -255,7 +264,8 @@ class AuthenticationController extends Controller
 
         //if user and passwordReset objects are set, notify user that we sent an email to him
         if ($user && $passwordReset) {
-            $user->notify(new MailResetPasswordRequestNotification($passwordReset->token));
+            //fire event to notify user with mail to reset his password through a link
+            Event::fire(new MailResetPasswordRequestEvent($user, $passwordReset));
         }
 
         //return response
@@ -319,7 +329,8 @@ class AuthenticationController extends Controller
         $user->save();
         $passwordReset->delete();
 
-        $user->notify(new MailPasswordResetSuccessNotification($passwordReset));
+        //fire an event to notify the user that he successfully changed his password
+        Event::fire(new MailPasswordResetSuccessEvent($user));
         return response()->json(['message'=>"password changed successfully", 'user' => $user], $this->successCode);
     }
 
