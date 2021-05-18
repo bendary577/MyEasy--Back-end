@@ -6,6 +6,7 @@ use App\Events\MailActivateAccountRequestEvent;
 use App\Events\MailCompanyRegisteredVerificationEvent;
 use App\Events\MailPasswordResetSuccessEvent;
 use App\Events\MailResetPasswordRequestEvent;
+use App\Events\UserAccountActivatedEvent;
 use App\Http\Controllers\Controller;
 use App\Models\AdminProfile;
 use App\Models\CompanyProfile;
@@ -13,9 +14,6 @@ use App\Models\CustomerProfile;
 use App\Models\PasswordReset;
 use App\Models\SellerProfile;
 use App\Models\User;
-use App\Notifications\MailActivateAccountRequestNotification;
-use App\Notifications\MailPasswordResetSuccessNotification;
-use App\Notifications\MailResetPasswordRequestNotification;
 use Carbon\Carbon;
 use GuzzleHttp\Client;
 use Illuminate\Http\Request;
@@ -44,11 +42,11 @@ class AuthenticationController extends Controller
                                  'delete complaint', 'list complaints'];
 
     public $seller_permissions = ['list categories', 'create store','list stores','edit store', 'delete store', 'list products',
-                                  'list orders', 'create product', 'list products', 'edit product', 'delete product', 'list orders',
+                                  'list orders', 'edit order', 'create product', 'list products', 'edit product', 'delete product', 'list orders',
                                   'edit order', 'delete order', 'create invoice', 'list invoices', 'edit invoice', 'delete invoice'];
 
     public $customer_permissions = ['list categories', 'list stores','rate store', 'list products','rate product', 'create order',
-                                    'create order','list orders','edit order', 'delete order', 'add to cart', 'list carts', 'edit cart',
+                                    'create order','list orders','delete order', 'add to cart', 'list carts', 'edit cart',
                                     'remove from cart','create complaint', 'list complaints', 'edit complaint'];
 
     //----------------------------------- REGISTER -------------------------
@@ -184,6 +182,9 @@ class AuthenticationController extends Controller
         $user->account_activated = true;
         $user->activation_token = '';
         $user->save();
+
+        //fire an event to notify the user that his account was activated
+        Event::fire(new UserAccountActivatedEvent($user));
         return response()->json(['message'=>"account was activated successfully", 'user'=>$user], $this->createdCode);
     }
 

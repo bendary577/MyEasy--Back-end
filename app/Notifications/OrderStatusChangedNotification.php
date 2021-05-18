@@ -6,21 +6,22 @@ use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Broadcasting\ShouldBroadcast;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Notifications\Messages\BroadcastMessage;
+use Illuminate\Notifications\Messages\MailMessage;
 use Illuminate\Notifications\Notification;
 
-class UserAccountActivatedNotification extends Notification implements ShouldQueue, ShouldBroadcast
+class OrderStatusChangedNotification extends Notification implements ShouldQueue, ShouldBroadcast
 {
     use Queueable;
 
-
+    public $order;
     /**
      * Create a new notification instance.
      *
      * @return void
      */
-    public function __construct()
+    public function __construct($order)
     {
-
+        $this->order = $order;
     }
 
     /**
@@ -44,8 +45,9 @@ class UserAccountActivatedNotification extends Notification implements ShouldQue
     public function toArray($notifiable)
     {
         return [
-            'user_id' => $notifiable->id,
-            'name' => $notifiable->first_name,
+            'order_id' => $this->order->id,
+            'product_name' => $this->order->product->name,
+            'status' => $this->order->status,
         ];
     }
 
@@ -56,6 +58,6 @@ class UserAccountActivatedNotification extends Notification implements ShouldQue
 
     public function broadcastType()
     {
-        return 'user-account-activated';
+        return 'order-status-changed';
     }
 }

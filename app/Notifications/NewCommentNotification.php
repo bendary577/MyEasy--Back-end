@@ -3,15 +3,13 @@
 namespace App\Notifications;
 
 use Illuminate\Bus\Queueable;
-use Illuminate\Contracts\Broadcasting\ShouldBroadcast;
 use Illuminate\Contracts\Queue\ShouldQueue;
-use Illuminate\Notifications\Messages\BroadcastMessage;
+use Illuminate\Notifications\Messages\MailMessage;
 use Illuminate\Notifications\Notification;
 
-class UserAccountActivatedNotification extends Notification implements ShouldQueue, ShouldBroadcast
+class NewCommentNotification extends Notification
 {
     use Queueable;
-
 
     /**
      * Create a new notification instance.
@@ -20,7 +18,7 @@ class UserAccountActivatedNotification extends Notification implements ShouldQue
      */
     public function __construct()
     {
-
+        //
     }
 
     /**
@@ -31,9 +29,22 @@ class UserAccountActivatedNotification extends Notification implements ShouldQue
      */
     public function via($notifiable)
     {
-        return ['database', 'broadcast'];
+        return ['mail'];
     }
 
+    /**
+     * Get the mail representation of the notification.
+     *
+     * @param  mixed  $notifiable
+     * @return \Illuminate\Notifications\Messages\MailMessage
+     */
+    public function toMail($notifiable)
+    {
+        return (new MailMessage)
+                    ->line('The introduction to the notification.')
+                    ->action('Notification Action', url('/'))
+                    ->line('Thank you for using our application!');
+    }
 
     /**
      * Get the array representation of the notification.
@@ -44,18 +55,7 @@ class UserAccountActivatedNotification extends Notification implements ShouldQue
     public function toArray($notifiable)
     {
         return [
-            'user_id' => $notifiable->id,
-            'name' => $notifiable->first_name,
+            //
         ];
-    }
-
-    public function toBroadcast($notifiable)
-    {
-        return new BroadcastMessage($this->toArray($notifiable));
-    }
-
-    public function broadcastType()
-    {
-        return 'user-account-activated';
     }
 }
