@@ -2,9 +2,11 @@
 
 namespace App\Http\Controllers\APIs\V1\Rest\Profiles;
 
+use App\Events\NewCommentEvent;
 use App\Http\Controllers\Controller;
 use App\Models\CustomerProfile;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Event;
 use Illuminate\Support\Facades\Validator;
 
 class CustomerProfileController extends Controller
@@ -31,6 +33,8 @@ class CustomerProfileController extends Controller
         }
 
         $customerProfile = CustomerProfile::create($data);
+
+
         return response()->json(["message" => "customerProfile record created"], 201);
     }
 

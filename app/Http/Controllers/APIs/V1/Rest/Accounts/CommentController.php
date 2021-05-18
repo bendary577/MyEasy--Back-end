@@ -2,9 +2,13 @@
 
 namespace App\Http\Controllers\APIs\V1\Rest\Accounts;
 
+use App\Events\NewCommentEvent;
 use App\Http\Controllers\Controller;
+use App\Models\Product;
 use Illuminate\Http\Request;
 use App\Models\Comment;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Event;
 use Illuminate\Support\Facades\Validator;
 
 class CommentController extends Controller
@@ -17,7 +21,7 @@ class CommentController extends Controller
     }
 
 
-    public function Create(Request $request)
+    public function Create(Request $request, $id)
     {
         $data = $request->all();
         //validator or request validator
@@ -29,8 +33,15 @@ class CommentController extends Controller
             return response()->json(['message' => $validator->errors()], 'Validation Error');
         }
 
-        $comment = Comment::create($data);
-        return response()->json(["message" => "Comment record created"], 201);
+        $user = Auth::user();
+        if (Product::where('id', $id)->exists()) {
+            $product = Product::where('id', $id)->get();
+            $comment = Comment::create($data);
+            Event::fire(new NewCommentEvent($user, $product));
+            return response()->json(["message" => "Comment record created"], 201);
+        }
+
+        return response()->json(["message" => "product is not found"], 201);
     }
 
 
