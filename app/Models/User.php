@@ -91,4 +91,10 @@ class User extends Authenticatable implements MustVerifyEmail
         $this->notify(new \App\Notifications\MailResetPasswordRequestNotification($token));
     }
 
+    //define the channel where the users notifications start going through
+    public function receivesBroadcastNotificationsOn()
+    {
+        return 'App.Models.User.' . $this->id;
+    }
+
 }

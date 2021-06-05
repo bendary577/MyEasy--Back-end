@@ -2,10 +2,16 @@
 
 namespace App\Http\Controllers\APIs\V1\Rest\Stores;
 
+use App\Events\MailActivateAccountRequestEvent;
+use App\Events\NewOrderEvent;
 use App\Events\NewOrderNotification;
+use App\Events\OrderCanceledEvent;
+use App\Events\OrderDeliveredEvent;
+use App\Events\OrderStatusChangedEvent;
 use App\Http\Controllers\Controller;
 use App\Models\Order;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Event;
 use Illuminate\Support\Facades\Validator;
 
 class OrderController extends Controller
@@ -40,14 +46,17 @@ class OrderController extends Controller
             return response()->json(['message' => $validator->errors()], 'Validation Error');
         }
 
-        $order = Order::create($data);
 
         $date = [
             'customer_name' => $request->customer_name,
         ];
 
-        event(new NewOrderNotification($data));
-        return response()->json(["message" => "Order record created"], 201);
+        $order = Order::create($data);
+
+        //notify seller than a customer make a new order to one of his products
+        Event::fire(new NewOrderEvent($order));
+
+        return response()->json(["message" => "order made successfully"], 201);
     }
 
 
@@ -70,7 +79,54 @@ class OrderController extends Controller
             $order->status = is_null($request->status) ? $order->status : $request->status;
             $order->save();
 
+            Event::fire(new OrderStatusChangedEvent($order));
+
             return response()->json(["message" => "Order updated successfully"], 200);
+        } else {
+            return response()->json(["message" => "Order not found"], 404);
+        }
+    }
+
+    /* -------------------------------------------get all Orders ------------------------------------------------ */
+    public function confirmOrder(Request $request, $id)
+    {
+        if (Order::where('id', $id)->exists()) {
+            $order = Order::find($id);
+            $user = Auth::user();
+            if($user->profile_type == 'App\Models\CompanyProfile' || $user->profile_type == 'App\Models\SellerProfile'){
+                //if seller has already confirmed the order return a message
+                if($order->seller_confirm == true){
+                    return response()->json(["message" => "you have already confirmed the order"], 200);
+                }
+                //else, confirm the order by the seller
+                $order->seller_confirm = true;
+
+                //if the order was confirmed by the customer, notify both of them and return informative message
+                if($order->customer_confirm == true){
+                    Event::fire(new OrderDeliveredEvent($order));
+                    return response()->json(["message" => "Order delivered successfully"], 200);
+                }
+
+                //else return a message that you have successfully confirmed the order
+                return response()->json(["message" => "you have successfully confirmed the order"], 200);
+            }
+
+            //if customer has already confirmed the order return a message
+            if($order->customer_confirm == true){
+                return response()->json(["message" => "you have already confirmed the order"], 200);
+            }
+            //else, confirm the order by the seller
+            $order->customer_confirm = true;
+
+            //if the order was confirmed by the seller, notify both of them and return informative message
+            if($order->seller_confirm == true){
+                Event::fire(new OrderDeliveredEvent($order));
+                return response()->json(["message" => "Order delivered successfully"], 200);
+            }
+
+            //else return a message that you have successfully confirmed the order
+            return response()->json(["message" => "you have successfully confirmed the order"], 200);
+
         } else {
             return response()->json(["message" => "Order not found"], 404);
         }
@@ -82,6 +138,7 @@ class OrderController extends Controller
         if(Order::where('id', $id)->exists()) {
             $order = Order::find($id);
             $order->delete();
+            Event::fire(new OrderCanceledEvent($order));
             return response()->json(["message" => "Order record deleted"], 202);
         } else {
             return response()->json(["message" => "Order not found"], 404);
