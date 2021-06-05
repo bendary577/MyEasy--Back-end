@@ -175,3 +175,12 @@ Route::group(['middleware' => 'jwt.verify'], static function(){
     Route::post('/refresh', 'Auth\AuthenticationController@refresh');        //http://127.0.0.1:8000/api/user/refresh
     Route::get('/detail', 'Auth\AuthenticationController@detail');           //http://127.0.0.1:8000/api/user/details
 });
+
+
+Route::get('/sent_mail', function(){
+    $content = 'Hello Hola';
+    Mail::to('mosadmohamed3@gmail.com')->sent(new MyeasySupport($content));
+    return 'E-mail Sent Successfuly';
+});
+
+Route::get('/sms', 'SMS\SMSController@sendSmsToMobile');

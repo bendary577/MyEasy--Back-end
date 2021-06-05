@@ -7,17 +7,19 @@ use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Mail\Mailable;
 use Illuminate\Queue\SerializesModels;
 
-class Order extends Mailable
+class MyeasySupport extends Mailable
 {
     use Queueable, SerializesModels;
 
+    public $content;
     /**
      * Create a new message instance.
      *
      * @return void
      */
-    public function __construct()
+    public function __construct($content)
     {
+        $this->content = $content;
     }
 
     /**
@@ -27,7 +29,6 @@ class Order extends Mailable
      */
     public function build()
     {
-        return $this->from('mosad@gmail.com')
-                    ->view('mail');
+        return $this->view('mail');
     }
 }

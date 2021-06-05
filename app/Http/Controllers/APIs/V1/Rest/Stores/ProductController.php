@@ -84,9 +84,9 @@ class ProductController extends Controller
             $product = Product::find($id);
             $product->delete();
             return response()->json(["message" => "Product record deleted"], 202);
-          } else {
+        } else {
             return response()->json(["message" => "Product not found"], 404);
-          }
+        }
     }
 
     /* ------------------------------------ rate a product -------------------------------------- */
@@ -101,4 +101,3 @@ class ProductController extends Controller
 
 
 }
-
