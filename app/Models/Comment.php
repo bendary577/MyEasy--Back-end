@@ -11,11 +11,21 @@ class Comment extends Model
 
     protected $fillable = [
         'content',
+        'user_id',
+        'product_id'
     ];
 
     protected $casts = [
         'created_at' => 'datetime',
     ];
 
+    public function customerProfile()
+    {
+        return $this->belongsTo(CustomerProfile::class);
+    }
 
+    public function product()
+    {
+        return $this->belongsTo(Product::class);
+    }
 }

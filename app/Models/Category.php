@@ -10,14 +10,15 @@ class Category extends Model
     use HasFactory;
 
     protected $fillable = [
-        'specilization',
+        'name',
+        'category_id'
     ];
 
     protected $casts = [
         'created_at' => 'datetime',
     ];
 
-    public function store(): \Illuminate\Database\Eloquent\Relations\HasMany
+    public function store()
     {
         return $this->hasMany(Store::class);
     }

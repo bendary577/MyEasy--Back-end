@@ -2,7 +2,7 @@
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
-
+use App\Models\Store;
 /*
 |--------------------------------------------------------------------------
 | API Routes
@@ -146,22 +146,6 @@ Route::group(['middleware' => ['auth:api', 'jwt.verify']] , function () {
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 //http://127.0.0.1:8000/api/user/login
 /*----------------------- authentication endpoints ------------------------------------- */
 Route::group([ 'middleware' => ['api'],'prefix' => 'user'], static function() {
@@ -177,10 +161,6 @@ Route::group(['middleware' => 'jwt.verify'], static function(){
 });
 
 
-Route::get('/sent_mail', function(){
-    $content = 'Hello Hola';
-    Mail::to('mosadmohamed3@gmail.com')->sent(new MyeasySupport($content));
-    return 'E-mail Sent Successfuly';
+Route::post('/test', function(Request $request){
+    //
 });
-
-Route::get('/sms', 'SMS\SMSController@sendSmsToMobile');

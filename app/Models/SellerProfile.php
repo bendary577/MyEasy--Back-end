@@ -24,20 +24,23 @@ class SellerProfile extends Model
         'created_at' => 'datetime',
     ];
 
-    public function invoices()
+    public function invoice()
     {
         return $this->hasMany(Invoice::class);
     }
 
-    public function stores()
+    public function store()
     {
         return $this->hasOne(Store::class);
     }
 
     public function user(){
-        return $this->morphOne('App\Models\User', 'profile');
+        return $this->morphOne(User::class, 'profile');
     }
 
-
+    public function complaint()
+    {
+        return $this->hasMany(Complaint::class);
+    }
 
 }

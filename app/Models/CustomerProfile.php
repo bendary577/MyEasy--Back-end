@@ -12,21 +12,41 @@ class CustomerProfile extends Model
 
     protected $fillable = [
         'gender',
-        'birth_date'
+        'birth_date',
+        'orders_number'
     ];
 
     protected $casts = [
         'created_at' => 'datetime',
     ];
 
-    public function product(): \Illuminate\Database\Eloquent\Relations\HasMany
+    public function cart()
     {
-        return $this->hasMany(Product::class);
+        return $this->hasMany(Cart::class);
     }
 
-    public function user(): \Illuminate\Database\Eloquent\Relations\MorphOne
+    public function order()
+    {
+        return $this->hasMany(Order::class);
+    }
+
+    public function rating()
+    {
+        return $this->hasMany(Rating::class);
+    }
+
+    public function comment()
+    {
+        return $this->hasMany(Comment::class);
+    }
+
+    public function user()
     {
         return $this->morphOne('App\Models\User', 'profile');
     }
 
+    public function complaint()
+    {
+        return $this->hasMany(Complaint::class);
+    }
 }

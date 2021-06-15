@@ -15,19 +15,12 @@ class CreateOrdersTable extends Migration
     {
         Schema::create('orders', function (Blueprint $table) {
             $table->id();
-            $table->string("customer_name");
-            $table->string("seller_name");
-            $table->float("price");
-            $table->enum("status", ['open', 'on_way', 'delivered', 'closed']);
-            $table->boolean("customer_confirm")->default(0);
-            $table->boolean("seller_confirm")->default(0);
+            $table->float('total');
+            $table->unsignedBigInteger('user_id');
+            $table->foreign('user_id')->references('id')->on('users')->onUpdate('cascade')->onDelete('cascade');
+            $table->json('products');
+            $table->enum('state', ['pendding', 'canceled', 'paied']);
             $table->timestamps();
-            $table->unsignedbigInteger('customer_id');
-            $table->foreign('customer_id')->references('id')->on('customer_profiles');
-            $table->unsignedbigInteger('seller_id');
-            $table->foreign('seller_id')->references('id')->on('seller_profiles');
-            $table->unsignedbigInteger('product_id');
-            $table->foreign('product_id')->references('id')->on('products');
         });
     }
 

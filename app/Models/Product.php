@@ -18,29 +18,35 @@ class Product extends Model
         'photo_path',
         'available_number',
         'price',
-        'category',
         'status',
-        'customer_cart',
-        'store'
+        'store',
+        'rating'
+        'ratings_number',
+        'store_id',
     ];
 
     protected $casts = [
         'created_at' => 'datetime',
     ];
 
-    public function store(): \Illuminate\Database\Eloquent\Relations\BelongsTo
+    public function store()
     {
         return $this->belongsTo(Store::class);
     }
 
-    public function order(): \Illuminate\Database\Eloquent\Relations\BelongsTo
+    public function comment()
     {
-        return $this->belongsTo(Order::class);
+        return $this->hasMany(Comment::class);
     }
 
-    public function customerProfile(): \Illuminate\Database\Eloquent\Relations\BelongsToMany
+    public function cart()
     {
-        return $this->belongsToMany(CustomerProfile::class);
+        return $this->hasMany(Cart::class);
+    }
+
+    public function rating()
+    {
+        return $this->hasMany(Raiting::class);
     }
 
     public function searchableAs()

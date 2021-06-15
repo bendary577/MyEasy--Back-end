@@ -10,15 +10,19 @@ class Order extends Model
     use HasFactory;
 
     protected $fillable = [
-        'status'
+        'total',
+        'products',
+        'status',
+        'user_id'
     ];
 
     protected $casts = [
         'created_at' => 'datetime',
     ];
 
-    public function product(): \Illuminate\Database\Eloquent\Relations\HasOne
+    public function customerProfile()
     {
-        return $this->hasOne(Product::class);
+        return $this->belongsTo(CustomerProfile::class);
     }
+
 }

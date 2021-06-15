@@ -52,122 +52,93 @@ class AuthenticationController extends Controller
     //----------------------------------- REGISTER -------------------------
     public function register(Request $request)
     {
-        //validate returned data from registration request
-        $validatedData = Validator::make($request->all(),[
-            'first_name' => 'required|string|max:55',
-            'second_name' => 'required|string|max:55',
-            'email' => 'email|required|string|max:255|unique:users',
+        $validator = Validator::make($request->all(), [
+            'first_name' => 'required|string|max:255',
+            'second_name' => 'required|string|max:255',
+            'email' => 'required|string|email|max:255|unique:users',
             'password' => 'required|string|min:6|confirmed',
             'type' => 'integer',
             'phone_number' => 'required|string|min:11|max:11'
         ]);
-
-        //check data validation
-        if ($validatedData->fails())
+        if ($validator->fails())
         {
-            return response()->json(['message'=>$validatedData->errors()->all()], $this->unauthorizedCode);
+            return response(['messsge' => $validator->errors()->all()], 422);
         }
-
-        $request['password'] = Hash::make($request->password);
+        $request['password']=Hash::make($request['password']);
         $request['remember_token'] = Str::random(10);
-
-        /*
-         check request user type
-         type 0 === admin
-         type 1 === customer
-         type 2 === seller individual
-         type 3 === company
-        */
-
-        //create user object and fill basic info
+        // $user = User::create($data);
+        
         $user = new User;
-        $user->first_name = $request['first_name'];
-        $user->second_name = $request['second_name'];
-        $user->email = $request['email'];
-        $user->password = $request['password'];
+        $user->first_name   = $request['first_name'];
+        $user->second_name  = $request['second_name'];
+        $user->email        = $request['email'];
+        $user->password     = $request['password'];
         $user->phone_number = $request['phone_number'];
-        $user->address = $request['address'];
-        $user->zipcode = $request['zipcode'];
+        $user->address      = $request['address'];
+        $user->photo_path   = '1.jpg'/*$request['photo']*/;
+        $user->bio          = $request['bio'];
+        $user->type         = $request['type'];
+        $user->zipcode      = $request['zipcode'];
         $user->activation_token = Str::random(60);
+        
+        switch ($request->type) {
+            case 0:
+                // Admin
+                $profile = AdminProfile::create([
+                    'name'  => 'Admin'
+                ]);
+                $profile->user()->save($user);
+                break;
+            
+            case 1:
+                // Customer
+                $profile = CustomerProfile::create([
+                    'gender'        => $request['gender'],
+                    'orders_number' => 0,
+                    'birth_date'    => $request['birth_date']
+                ]);
+                $profile->user()->save($user);
+                break;
+            
+            case 2:
+                // Seller
+                $profile = SellerProfile::create([
+                    'customers_number'  => 0,
+                    'orders_number'     => 0,
+                    'delivery_speed'    => 0,
+                    'has_store'         => 0,
+                    'birth_date'        => $request['birth_date'],
+                    'gender'            => $request['gender'],
+                    'badge'             => $request['badge'],
+                    'specialization'    => $request['specialization'],
+                ]);
+                $profile->user()->save($user);
+                break;
 
-        if($request['type'] == 0){
-            //create admin profile
-            $profile = new AdminProfile;
-            $profile->admin_name = $request['first_name'];
-            $profile->user()->save($user);
-
-            //create admin roles and permissions
-            $role = Role::create(['name' => 'admin']);
-            $user->assignRole($role);
-            foreach ($this->admin_permissions as $admin_permission) {
-                $permission = Permission::create(['name' => $admin_permission]);
-                $role->givePermissionTo($permission);
-            }
-        }else if($request['type'] == 1){
-            //create customer profile
-            $profile = new CustomerProfile;
-            $profile->gender = $request['gender'];
-            $profile->birth_date = $request['birth_date'];
-            $profile->user()->save($user);
-            //create customer roles and permissions
-            $role = Role::create(['name' => 'customer']);
-            $user->assignRole($role);
-            foreach ($this->customer_permissions as $customer_permission) {
-                $permission = Permission::create(['name' => $customer_permission]);
-                $role->givePermissionTo($permission);
-            }
-        }else if($request['type'] == 2){
-            //create seller profile
-            $profile = new SellerProfile;
-            $profile->gender = $request['gender'];
-            $profile->specialization = $request['specialization'];
-            $profile->has_store = false;
-            $profile->customers_number = 0;
-            $profile->orders_number = 0;
-            $profile->user()->save($user);
-            //create seller roles and permissions
-            $role = Role::create(['name' => 'seller']);
-            $user->assignRole($role);
-            foreach ($this->seller_permissions as $seller_permission) {
-                $permission = Permission::create(['name' => $seller_permission]);
-                $role->givePermissionTo($permission);
-            }
-        }else{
-            //create company profile
-            $profile = new CompanyProfile;
-            $profile->specialization = $request['specialization'];
-            $profile->has_store = false;
-            $profile->customers_number = 0;
-            $profile->orders_number = 0;
-            $profile->user()->save($user);
-            //create seller roles and permissions
-            $role = Role::create(['name' => 'seller']);
-            $user->assignRole($role);
-            foreach ($this->seller_permissions as $seller_permission) {
-                $permission = Permission::create(['name' => $seller_permission]);
-                $role->givePermissionTo($permission);
-            }
+            case 3:
+                // Company
+                $profile = CompanyProfile::create([
+                    'customers_number'  => 0,
+                    'orders_number'     => 0,
+                    'delivery_speed'    => 0,
+                    'has_store'         => 0,
+                    'birth_date'        => $request['birth_date'],
+                    'badge'             => $request['badge'],
+                    'specialization'    => $request['specialization'],
+                ]);
+                $profile->user()->save($user);
+                break;
+            default:
+                return response(['message' => 'Determind Type of User.']);
+                break;
         }
-
-        //return jwt access token
-        //$accessToken = $user->createToken('accessToken')->accessToken;
-        //return response(['user' => $user, 'access_token' => $accessToken], $this->successCode);
-
-        $user->save();
-
-        //store avatar temporariy in project storage
-        $avatar = Avatar::create($user->name)->getImageObject()->encode('png');
-        Storage::disk('s3')->put('avatars/'.$user->id.'/', file_get_contents($avatar));
-
-        if($user->getHasCompanyProfileAttribute()){
-            //request from company profile to send data to verify account
-            Event::fire(new MailCompanyRegisteredVerificationEvent($user));
-        }else{
-            //request from user to activate account
-            Event::fire(new MailActivateAccountRequestEvent($user));
-        }
+        /*
         $oClient = OClient::where('password_client', 1)->first();
         return $this->getTokenAndRefreshToken($oClient, $user->email, $user->password);
+        */
+        $token = $user->createToken('password_client')->accessToken;
+        $response = ['token' => $token];
+        return response($response, 200);
     }
 
 
@@ -193,31 +164,32 @@ class AuthenticationController extends Controller
     {
         $validator = Validator::make($request->all(), [
             'email' => 'required|string|email|max:255',
-            'password' => 'required|string|min:6|confirmed',
+            'password' => 'required|string|min:6',
         ]);
-
         if ($validator->fails())
         {
-            return response()->json(['errors'=>$validator->errors()->all()], $this->unprocessableCode);
+            return response(['errors'=>$validator->errors()->all()], 422);
         }
 
         $user = User::where('email', $request->email)->first();
-
+        
         if ($user) {
-            if($user->is_blocked){
-                return response()->json(['message'=>"sorry, your account is blocked"], $this->unprocessableCode);
-            }else if (Hash::check($request->password, $user->password)) {
-                //$token = $user->createToken('accessToken')->accessToken;
-                //$response = ['message' =>"user has returned successfully", 'token' => $token];
-                //return response($response, $this->successCode);
+            if (Hash::check($request->password, $user->password)) {
                 $oClient = OClient::where('password_client', 1)->first();
                 return $this->getTokenAndRefreshToken($oClient, request('email'), request('password'));
+                $token = $user->createToken('Laravel Password Grant Client')->accessToken;
+                $response = ['token' => $token];
+                return response($response, 200);
             } else {
-                return response()->json(["message" => "Password mismatch"], $this->unauthorizedCode);
+                $response = ["message" => "Password mismatch"];
+                return response($response, 422);
             }
         } else {
-            return response()->json(["message" =>'User does not exist'], $this->unprocessableCode);
+            $response = ["message" =>'User does not exist'];
+            return response($response, 422);
         }
+
+            
     }
 
     //--------------------------------------- LOGOUT ------------------------------

@@ -14,16 +14,13 @@ class CreateStoresTable extends Migration
     public function up()
     {
         Schema::create('stores', function (Blueprint $table) {
-            $table->id('id');
+            $table->id();
             $table->string('name');
-            $table->float('rating');
-            $table->integer('ratings_number');
-            $table->enum('categories', ['men', 'electric']);
+            $table->unsignedBigInteger('user_id');
+            $table->foreign('user_id')->references('id')->on('users')->onUpdate('cascade')->onDelete('cascade');
+            $table->unsignedBigInteger('category_id');
+            $table->foreign('category_id')->references('id')->on('categories')->onUpdate('cascade')->onDelete('cascade');
             $table->timestamps();
-            $table->unsignedbigInteger('s_owner');
-            $table->unsignedbigInteger('c_owner');
-            $table->foreign('s_owner')->references('id')->on('seller_profiles');
-            $table->foreign('c_owner')->references('id')->on('company_profiles');
         });
     }
 

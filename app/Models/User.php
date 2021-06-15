@@ -10,11 +10,11 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Support\Facades\Storage;
 use Laravel\Passport\HasApiTokens;
-use Spatie\Permission\Traits\HasRoles;
+// use Spatie\Permission\Traits\HasRoles;
 
 class User extends Authenticatable implements MustVerifyEmail
 {
-    use HasApiTokens, HasFactory, Notifiable, HasRoles, SoftDeletes;
+    use HasApiTokens, HasFactory, Notifiable, /*HasRoles,*/ SoftDeletes;
 
     protected $fillable = [
         'first_name',
@@ -50,12 +50,10 @@ class User extends Authenticatable implements MustVerifyEmail
     /* -------------------------------- profiles ----------------------------------- */
 
     protected $with = ['profile'];
-    /**
-     * @var mixed
-     */
+    
     private $profile_type;
 
-    public function profile(): MorphTo
+    public function profile()
     {
       return $this->morphTo();
     }

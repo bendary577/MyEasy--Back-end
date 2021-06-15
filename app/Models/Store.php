@@ -4,38 +4,40 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use Laravel\Scout\Searchable;
+// use Laravel\Scout\Searchable;
 
 class Store extends Model
 {
-    use HasFactory, Searchable;
+    use HasFactory;
 
     protected $fillable = [
         'name',
+        'user_id',
+        'category_id',
     ];
 
     protected $casts = [
         'created_at' => 'datetime',
     ];
 
-    public function product(): \Illuminate\Database\Eloquent\Relations\HasMany
+    public function product()
     {
         return $this->hasMany(Product::class);
     }
 
-    public function sellerProfile(): \Illuminate\Database\Eloquent\Relations\BelongsTo
+    public function sellerProfile()
     {
         return $this->belongsTo(SellerProfile::class);
     }
 
-    public function companyProfile(): \Illuminate\Database\Eloquent\Relations\BelongsTo
+    public function companyProfile()
     {
         return $this->belongsTo(CompanyProfile::class);
     }
 
-    public function category(): \Illuminate\Database\Eloquent\Relations\HasMany
+    public function category()
     {
-        return $this->hasMany(Category::class);
+        return $this->belongsTo(Category::class);
     }
 
     public function searchableAs()

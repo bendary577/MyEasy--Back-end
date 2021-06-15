@@ -41,7 +41,7 @@ return [
     |
     */
 
-    'queue' => env('SCOUT_QUEUE', true),
+    'queue' => env('SCOUT_QUEUE', false),
 
     /*
     |--------------------------------------------------------------------------
@@ -98,7 +98,7 @@ return [
     |
     */
 
-    'identify' => env('SCOUT_IDENTIFY', true),
+    'identify' => env('SCOUT_IDENTIFY', false),
 
     /*
     |--------------------------------------------------------------------------

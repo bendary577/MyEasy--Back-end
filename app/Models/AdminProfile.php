@@ -10,11 +10,11 @@ class AdminProfile extends Model
     use HasFactory;
 
     protected $fillable = [
-        'admin_name',
+        'name',
     ];
 
     public function user(){
-        return $this->morphOne('App\Models\User', 'profile');
+        return $this->morphOne(User::class, 'profile');
     }
 
 

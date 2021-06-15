@@ -16,26 +16,30 @@ class CompanyProfile extends Model
         'badge',
         'delivery_speed',
         'has_store',
+        'specialization'
     ];
 
     protected $casts = [
         'created_at' => 'datetime',
     ];
 
-    public function invoices(): \Illuminate\Database\Eloquent\Relations\HasMany
+    public function invoice()
     {
         return $this->hasMany(Invoice::class);
     }
 
-    public function stores(): \Illuminate\Database\Eloquent\Relations\HasOne
+    public function store()
     {
         return $this->hasOne(Store::class);
     }
 
-    public function user(): \Illuminate\Database\Eloquent\Relations\MorphOne
+    public function user()
     {
-        return $this->morphOne('App\Models\User', 'profile');
+        return $this->morphOne(User::class, 'profile');
     }
 
-
+    public function complaint()
+    {
+        return $this->hasMany(Complaint::class);
+    }
 }

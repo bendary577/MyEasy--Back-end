@@ -22,7 +22,7 @@ class CreateSellerProfilesTable extends Migration
             $table->date('birth_date');
             $table->enum('gender', ['male', 'female']);
             $table->enum('badge', ['gold', 'silver', 'bronze']);
-            $table->enum('specialization', ['electronics', 'sports']);
+            $table->string('specialization');
             $table->timestamps();
         });
     }
