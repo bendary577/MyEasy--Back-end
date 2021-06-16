@@ -12,23 +12,27 @@ class ProductController extends Controller
 {
     public function __construct()
     {
+        /*
         $this->middleware('permission:create product|list products|edit product|delete product', ['only' => ['getAll','getOne']]);
         $this->middleware('permission:create product', ['only' => ['create']]);
         $this->middleware('permission:edit product', ['only' => ['update']]);
         $this->middleware('permission:delete product', ['only' => ['delete']]);
+        */
     }
 
     /* -------------------------------------------get all products ------------------------------------------------ */
     public function getAll()
     {
-        $product = Product::query()->orderByDesc('created_at')->paginate(6)->toJson();
-        return response($product, 200);
+        $products = Product::all();
+        return response([
+            'message'   => 'Return All Products',
+            'data'      => $products
+        ], 200);
     }
 
     /* ------------------------------------- create a product -------------------------------------- */
-    public function create(Request $request): \Illuminate\Http\JsonResponse
+    public function create(Request $request)
     {
-
         $data = $request->all();
         //validator or request validator
         $validator = Validator::make($data, [
@@ -38,15 +42,34 @@ class ProductController extends Controller
         ]);
 
         if ($validator->fails()) {
-            return response()->json(['message' => $validator->errors()], 'Validation Error');
+            return response(['message' => $validator->errors()], 'Validation Error');
         }
-
-        $product = Product::create($data);
-        return response()->json(["message" => "product record created"], 201);
+        $product = new Product;
+        $product->name              = $data['name'];
+        $product->store_id          = $data['store_id'];
+        $product->description       = $data['description'];
+        $product->photo_path        = $data['photo_path'];
+        $product->price             = $data['price'];
+        $product->available_number  = $data['available_number'];
+        $product->status            = $data['status'];
+        $product->save();
+        /*
+        */
+        return response(['message' => 'Product Record Created'], 201);
+        Product::create([
+            'name'              => $data['name'],
+            'store_id'          => $data['store_id'],
+            'description'       => $data['description'],
+            'photo_path'        => $data['photo_path'],
+            'price'             => $data['price'],
+            'available_number'  => $data['available_number'],
+            'status'            => $data['status']
+        ]);
+        return 0;
+        return response(['message' => 'Product Record Created'], 201);
     }
 
-
-     /* -------------------------------------get one product -------------------------------------- */
+    /* -------------------------------------get one product -------------------------------------- */
     public function getOne($id)
     {
         if (Product::where('id', $id)->exists()) {

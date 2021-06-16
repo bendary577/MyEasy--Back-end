@@ -14,15 +14,14 @@ class Product extends Model
 
     protected $fillable = [
         'name',
+        'store_id',
         'description',
         'photo_path',
-        'available_number',
         'price',
+        'available_number',
         'status',
-        'store',
-        'rating'
+        'rating',
         'ratings_number',
-        'store_id',
     ];
 
     protected $casts = [

@@ -21,7 +21,7 @@ Route::group(['middleware' => ['cors', 'json.response']], function () {
 });
 
 //------------------------ protected apis ------------------------
-Route::group(['middleware' => ['auth:api', 'jwt.verify']] , function () {
+// Route::group(['middleware' => ['auth:api', 'jwt.verify']] , function () {
 
     /*------------------------------ authentication endpoints ------------*/
     Route::group(['prefix' => 'user'], static function(){
@@ -85,25 +85,22 @@ Route::group(['middleware' => ['auth:api', 'jwt.verify']] , function () {
     });
 
     /* ---------------------- products endpoint --------------------- */
-    Route::group(['prefix'=>'products'], function () {
+    Route::group(['prefix'=>'product'], function () {
         Route::get('/', 'Rest\Stores\ProductController@getAll');                      //http://127.0.0.1:8000/api/products/
         Route::get('/{id}', 'Rest\Stores\ProductController@getOne');                  //http://127.0.0.1:8000/api/products/1
         Route::post('/', 'Rest\Stores\ProductController@create');                     //http://127.0.0.1:8000/api/products/
-        Route::put('/{id}', 'Rest\Stores\ProductController@update');                  //http://127.0.0.1:8000/api/products/1
-        Route::delete('/{id}', 'Rest\Stores\ProductController@delete');               //http://127.0.0.1:8000/api/products/1
+        Route::post('/{id}', 'Rest\Stores\ProductController@update');                  //http://127.0.0.1:8000/api/products/1
+        Route::post('/delete/{id}', 'Rest\Stores\ProductController@delete');               //http://127.0.0.1:8000/api/products/1
     });
 
-
     /* ---------------------- stores endpoint --------------------- */
-    Route::group(['prefix' => 'stores'], function () {
+    Route::group(['prefix' => 'store'], function () {
         Route::get('/', 'Rest\Stores\StoreController@getAll');                      //http://127.0.0.1:8000/api/stores/
         Route::get('/{id}', 'Rest\Stores\StoreController@getOne');                  //http://127.0.0.1:8000/api/stores/1
         Route::post('/', 'Rest\Stores\StoreController@create');                     //http://127.0.0.1:8000/api/stores/
-        Route::put('/{id}', 'Rest\Stores\StoreController@update');                  //http://127.0.0.1:8000/api/stores/1
-        Route::delete('/{id}', 'Rest\Stores\StoreController@delete');               //http://127.0.0.1:8000/api/stores/1
+        Route::post('/{id}', 'Rest\Stores\StoreController@update');                  //http://127.0.0.1:8000/api/stores/1
+        Route::post('/delete/{id}', 'Rest\Stores\StoreController@delete');               //http://127.0.0.1:8000/api/stores/1
     });
-
-
 
     /* ---------------------- invoices endpoint --------------------- */
     Route::group(['prefix'=>'invoices'], function () {
@@ -113,7 +110,6 @@ Route::group(['middleware' => ['auth:api', 'jwt.verify']] , function () {
         Route::put('/{id}', 'Rest\Stores\InvoiceController@update');                //http://127.0.0.1:8000/api/invoices/1
         Route::delete('/{id}', 'Rest\Stores\InvoiceController@delete');             //http://127.0.0.1:8000/api/invoices/1
     });
-
 
     /* ---------------------- orders endpoint --------------------- */
     Route::group(['prefix'=>'orders'], function () {
@@ -129,8 +125,8 @@ Route::group(['middleware' => ['auth:api', 'jwt.verify']] , function () {
         Route::get('/', 'Rest\Stores\CategoryController@getAll');                      //http://127.0.0.1:8000/api/Categories/
         Route::get('/{id}', 'Rest\Stores\CategoryController@getOne');                  //http://127.0.0.1:8000/api/Categories/1
         Route::post('/', 'Rest\Stores\CategoryController@create');                     //http://127.0.0.1:8000/api/Categories/
-        Route::put('/{id}', 'Rest\Stores\CategoryController@update');                  //http://127.0.0.1:8000/api/Categories/1
-        Route::delete('/{id}', 'Rest\Stores\CategoryController@delete');               //http://127.0.0.1:8000/api/categories/1
+        Route::post('/{id}', 'Rest\Stores\CategoryController@update');                  //http://127.0.0.1:8000/api/Categories/1
+        Route::post('/delete/{id}', 'Rest\Stores\CategoryController@delete');               //http://127.0.0.1:8000/api/categories/1
     });
 
     /* ---------------------- Carts endpoint --------------------- */
@@ -142,7 +138,7 @@ Route::group(['middleware' => ['auth:api', 'jwt.verify']] , function () {
     });
 
     Route::post('/search', 'Search\SearchController@search');
-});
+// });
 
 
 

@@ -12,21 +12,25 @@ class StoreController extends Controller
 
     public function __construct()
     {
+        /*
         $this->middleware('permission:create store|list stores|edit store|delete store', ['only' => ['getAll','getOne']]);
         $this->middleware('permission:create store', ['only' => ['create']]);
         $this->middleware('permission:edit store', ['only' => ['update']]);
-        $this->middleware('permission:delete store', ['only' => ['delete']]);
+        $this->middleware('permission:delete store', ['only' => ['delete']]);*/
     }
 
     /* -------------------------------------------get all store ------------------------------------------------ */
     public function getAll()
     {
-        $store = Store::get()->toJson();
-        return response($store, 200);
+        $stores = Store::all();
+        return response([
+            'message'   => 'Return All Stores',
+            'data'      => $stores
+        ], 200);
     }
 
     /* ------------------------------------- create an store -------------------------------------- */
-    public function create(Request $request): \Illuminate\Http\JsonResponse
+    public function create(Request $request)
     {
         $data = $request->all();
 
@@ -36,11 +40,15 @@ class StoreController extends Controller
         ]);
 
         if ($validator->fails()) {
-            return response()->json(['message' => $validator->errors()], 'Validation Error');
+            return response(['message' => $validator->errors()], 'Validation Error');
         }
 
-        $store = Store::create($data);
-        return response()->json(["message" => "store record created"], 201);
+        $store = Store::create([
+            'name'  => $data['name'],
+            'user_id'  => $data['user_id'],
+            'category_id'  => $data['category_id']
+        ]);
+        return response(["message" => "store record created"], 201);
     }
 
 
@@ -48,36 +56,39 @@ class StoreController extends Controller
     public function getOne($id)
     {
         if (Store::where('id', $id)->exists()) {
-            $store = Store::where('id', $id)->get()->toJson();
-            return response($store, 200);
+            $store = Store::where('id', $id)->get();
+            return response([
+                'message'   => 'Return One Store',
+                'data'      => $store
+            ], 200);
         } else {
-            return response()->json(["message" => "store not found"], 404);
+            return response(["message" => "store not found"], 404);
         }
     }
 
     /* -------------------------------------update one store -------------------------------------- */
-    public function update(Request $request, $id): \Illuminate\Http\JsonResponse
+    public function update(Request $request, $id)
     {
         if (Store::where('id', $id)->exists()) {
             $store = Store::find($id);
             $store->name = is_null($request->name) ? $store->name : $request->name;
             $store->save();
 
-            return response()->json(["message" => "store updated successfully"], 200);
+            return response(["message" => "store updated successfully"], 200);
         } else {
-            return response()->json(["message" => "store not found"], 404);
+            return response(["message" => "store not found"], 404);
         }
     }
 
     /* -------------------------------------delete store -------------------------------------- */
-    public function delete($id): \Illuminate\Http\JsonResponse
+    public function delete($id)
     {
         if(Store::where('id', $id)->exists()) {
             $store = Store::find($id);
             $store->delete();
-            return response()->json(["message" => "store record deleted"], 202);
+            return response(["message" => "store record deleted"], 202);
         } else {
-            return response()->json(["message" => "store not found"], 404);
+            return response(["message" => "store not found"], 404);
         }
     }
 

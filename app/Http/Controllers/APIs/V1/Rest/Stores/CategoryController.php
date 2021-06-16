@@ -11,51 +11,59 @@ class CategoryController extends Controller
 {
     public function __construct()
     {
+        /*
         $this->middleware('permission:create category|list categories|edit category|delete category', ['only' => ['getAll','getOne']]);
         $this->middleware('permission:create category', ['only' => ['create']]);
         $this->middleware('permission:edit category', ['only' => ['update']]);
-        $this->middleware('permission:delete category', ['only' => ['delete']]);
+        $this->middleware('permission:delete category', ['only' => ['delete']]);*/
     }
 
     public function getAll()
     {
-        $categories = Category::query()->orderByDesc('created_at')->paginate(6)->toJson();
-        return response($categories, 200);
+        $categories = Category::all();
+        return response([
+            'message'   => 'success returned categories',
+            'data'      => $categories,
+        ], 200);
     }
 
-
-    public function create(Request $request): \Illuminate\Http\JsonResponse
+    public function create(Request $request)
     {
+        // return 0;
         $data = $request->all();
         $validator = Validator::make($data, [
-            'name' => 'required|max:255',
+            'name' => 'required|max:255|unique:categories',
         ]);
 
         if ($validator->fails()) {
-            return response()->json(['message' => $validator->errors()], 'Validation Error');
+            return response(['message' => $validator->errors()], 'Validation Error');
         }
 
-        $category = Category::create($data);
-        return response()->json(["message" => "Category record created"], 201);
+        Category::create([
+            'name'  => $data['name'],
+        ]);
+        return response(['message' => 'Category record created'], 201);
     }
-
 
     public function getOne($id)
     {
         if (Category::where('id', $id)->exists()) {
-            $category = Category::where('id', $id)->get()->toJson();
-            return response($category, 200);
+            $category = Category::where('id', $id)->get();
+            return response([
+                'message'   => 'One Category Return',
+                'data'      => $category
+            ], 200);
         } else {
-            return response()->json(["message" => "Category not found"], 404);
+            return response(["message" => "Category not found"], 404);
         }
     }
 
-
     public function update(Request $request, $id)
     {
+        // return $request;
         if (Category::where('id', $id)->exists()) {
             $category = Category::find($id);
-            $category->name = is_null($request->name) ? $category->name : $request->name;
+            $category->name = $request->name;
             $category->save();
 
             return response()->json(["message" => "Category updated successfully"], 200);
@@ -63,7 +71,6 @@ class CategoryController extends Controller
             return response()->json(["message" => "Category not found"], 404);
         }
     }
-
 
     public function delete($id)
     {
