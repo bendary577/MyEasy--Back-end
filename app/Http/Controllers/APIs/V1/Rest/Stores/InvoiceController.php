@@ -23,7 +23,7 @@ class InvoiceController extends Controller
     /* -------------------------------------------get all Invoices ------------------------------------------------ */
     public function getAll()
     {
-        $invoice = Invoice::get();
+        $invoice = Invoice::paginate(10);
         return response([
             'message'   => 'Get All Invoices',
             'data'      => $invoice
@@ -33,8 +33,7 @@ class InvoiceController extends Controller
     /* ------------------------------------- get invoice by user ------------------------------------ */
     public function get_invoice_user()
     {
-        // $id = Auth::user()->id;
-        $invoice = Invoice::where('user_id', '1')->get();
+        $invoice = Invoice::where('user_id', Auth::user()->id)->paginate(10);
         return response([
             'message'   => 'Your Invoice Returned',
             'data'      => $invoice
@@ -57,7 +56,7 @@ class InvoiceController extends Controller
         }
 
         $invoice = Invoice::create([
-            'user_id'   => '1',
+            'user_id'   => Auth::user()->id,
             'title'     => $data['title'],
             'price'     => $data['price'],
             'expiration'=> $data['expiration']

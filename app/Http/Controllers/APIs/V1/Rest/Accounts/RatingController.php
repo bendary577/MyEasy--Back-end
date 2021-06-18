@@ -11,10 +11,9 @@ use Auth;
 
 class RatingController extends Controller
 {
-
     public function get_user_rating()
     {
-        $rating = Rating::where('user_id', Auth::user()->id)->get();
+        $rating = Rating::where('user_id', Auth::user()->id)->paginate(10);
         return response([
             'message'   => 'User Ratings',
             'data'      => $rating
@@ -23,7 +22,7 @@ class RatingController extends Controller
 
     public function get_product_rating($id)
     {
-        $rating = Rating::where('product_id', $id)->get();
+        $rating = Rating::where('product_id', $id)->paginate(10);
         return response([
             'message'   => 'Product Ratings',
             'data'      => $rating
@@ -71,6 +70,7 @@ class RatingController extends Controller
         
         return response(["message" => "Rating record created"], 201);
     }
+
     /*
     public function getOne($id)
     {
@@ -82,28 +82,53 @@ class RatingController extends Controller
         }
     }
     */
-    public function update(Request $request, $id)
+
+    public function update(Request $request)
     {
+        $id = $request->id;
+        $avg = 0;
+        // return 0;
         if (Rating::where('id', $id)->exists()) {
             $rating = Rating::find($id);
             $rating->rate = is_null($request->rate) ? $rating->rate : $request->rate;
             $rating->save();
 
-            return response()->json(["message" => "Rating updated successfully"], 200);
+            $rates = Rating::where('product_id', $rating->product_id)->get();
+            $product = Product::find($rating->product_id);
+            $num = $product->ratings_number;
+            foreach($rates as $rate){
+                $avg = $avg + $rate->rate;
+            }
+            $product->rating = $avg / $num;
+            $product->save();
+
+            return response(["message" => "Rating updated successfully"], 200);
         } else {
-            return response()->json(["message" => "Rating not found"], 404);
+            return response(["message" => "Rating not found"], 404);
         }
     }
 
-
-    public function destroy($id)
+    public function delete($id)
     {
+        $avg = 0;
         if(Rating::where('id', $id)->exists()) {
             $rating = Rating::find($id);
             $rating->delete();
-            return response()->json(["message" => "Rating record deleted"], 202);
+
+            $rates = Rating::where('product_id', $rating->product_id)->get();
+            $product = Product::find($rating->product_id);
+            $num = $product->ratings_number - 1;
+            $product->ratings_number = $num;
+
+            foreach($rates as $rate){
+                $avg = $avg + $rate->rate;
+            }
+            $product->rating = $avg / $num;
+            $product->save();
+
+            return response(["message" => "Rating record deleted"], 202);
         } else {
-            return response()->json(["message" => "Rating not found"], 404);
+            return response(["message" => "Rating not found"], 404);
         }
     }
 }

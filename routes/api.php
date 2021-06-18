@@ -131,6 +131,7 @@ Route::group(['middleware' => ['cors', 'json.response']], function () {
     Route::group(['prefix'=>'category'], function () {
         Route::get('/', 'Rest\Stores\CategoryController@getAll');                      //http://127.0.0.1:8000/api/Categories/
         Route::get('/{id}', 'Rest\Stores\CategoryController@getOne');                  //http://127.0.0.1:8000/api/Categories/1
+        Route::get('with//stores', 'Rest\Stores\CategoryController@category_store');                  //http://127.0.0.1:8000/api/Categories/1
         Route::post('/', 'Rest\Stores\CategoryController@create');                     //http://127.0.0.1:8000/api/Categories/
         Route::post('/{id}', 'Rest\Stores\CategoryController@update');                  //http://127.0.0.1:8000/api/Categories/1
         Route::post('/delete/{id}', 'Rest\Stores\CategoryController@delete');               //http://127.0.0.1:8000/api/categories/1
@@ -138,16 +139,29 @@ Route::group(['middleware' => ['cors', 'json.response']], function () {
 
     /* ---------------------- Carts endpoint --------------------- */
     Route::group(['prefix'=>'cart'], function () {
-        Route::get('/', 'Rest\Accounts\CartController@getAll');                      //http://127.0.0.1:8000/api/Cart/
-        Route::post('/', 'Rest\Accounts\CartController@create');                     //http://127.0.0.1:8000/api/Cart/
-        Route::post('/increase', 'Rest\Accounts\CartController@increase');                     //http://127.0.0.1:8000/api/Cart/
-        Route::post('/decrease', 'Rest\Accounts\CartController@decrease');                     //http://127.0.0.1:8000/api/Cart/
-        // Route::put('/{id}', 'Rest\Accounts\CartController@update');                  //http://127.0.0.1:8000/api/Cart/1
-        Route::post('/delete/{id}', 'Rest\Accounts\CartController@destroy');               //http://127.0.0.1:8000/api/Cart/1
+        Route::get('/', 'Rest\Accounts\CartController@getAll');                       //http://127.0.0.1:8000/api/Cart/
+        Route::post('/', 'Rest\Accounts\CartController@create');                      //http://127.0.0.1:8000/api/Cart/
+        Route::post('/increase', 'Rest\Accounts\CartController@increase');            //http://127.0.0.1:8000/api/Cart/
+        Route::post('/decrease', 'Rest\Accounts\CartController@decrease');            //http://127.0.0.1:8000/api/Cart/
+        // Route::put('/{id}', 'Rest\Accounts\CartController@update');                //http://127.0.0.1:8000/api/Cart/1
+        Route::post('/delete/{id}', 'Rest\Accounts\CartController@destroy');          //http://127.0.0.1:8000/api/Cart/1
     });
 
     Route::group(['prefix'=>'rating'], function () {
+        Route::get('/user', 'Rest\Accounts\RatingController@get_user_rating');         //http://127.0.0.1:8000/api/Cart/
+        Route::get('/product/{id}', 'Rest\Accounts\RatingController@get_product_rating');   //http://127.0.0.1:8000/api/Cart/
         Route::post('/', 'Rest\Accounts\RatingController@create');                      //http://127.0.0.1:8000/api/Cart/
+        Route::post('/edit', 'Rest\Accounts\RatingController@update');                      //http://127.0.0.1:8000/api/Cart/
+        Route::post('/delete/{id}', 'Rest\Accounts\RatingController@delete');                      //http://127.0.0.1:8000/api/Cart/
+    });
+
+    Route::group(['prefix'=>'complaint'], function () {
+        Route::get('/', 'Rest\Accounts\ComplaintController@getAll');         //http://127.0.0.1:8000/api/Cart/
+        Route::get('/{id}', 'Rest\Accounts\ComplaintController@getOne');         //http://127.0.0.1:8000/api/Cart/
+        Route::get('/user', 'Rest\Accounts\ComplaintController@get_user_complaint');         //http://127.0.0.1:8000/api/Cart/
+        Route::post('/', 'Rest\Accounts\ComplaintController@create');         //http://127.0.0.1:8000/api/Cart/
+        Route::post('/edit/{id}', 'Rest\Accounts\ComplaintController@update');         //http://127.0.0.1:8000/api/Cart/
+        Route::post('/delete/{id}', 'Rest\Accounts\ComplaintController@delete');         //http://127.0.0.1:8000/api/Cart/
     });
 
     Route::post('/search', 'Search\SearchController@search');

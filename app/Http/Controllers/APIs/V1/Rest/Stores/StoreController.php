@@ -4,7 +4,7 @@ namespace App\Http\Controllers\APIs\V1\Rest\Stores;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\Store;
-
+use Auth;
 use Illuminate\Support\Facades\Validator;
 
 class StoreController extends Controller
@@ -22,7 +22,7 @@ class StoreController extends Controller
     /* -------------------------------------------get all store ------------------------------------------------ */
     public function getAll()
     {
-        $stores = Store::all();
+        $stores = Store::paginate(10);
         return response([
             'message'   => 'Return All Stores',
             'data'      => $stores
@@ -45,12 +45,11 @@ class StoreController extends Controller
 
         $store = Store::create([
             'name'  => $data['name'],
-            'user_id'  => $data['user_id'],
+            'user_id'  => Auth::user()->id,
             'category_id'  => $data['category_id']
         ]);
         return response(["message" => "store record created"], 201);
     }
-
 
     /* -------------------------------------get one store -------------------------------------- */
     public function getOne($id)
@@ -101,7 +100,7 @@ class StoreController extends Controller
 
         $store = Store::query()
                     ->where("name", "LIKE", "%{$search}%")
-                    ->get();
+                    ->paginate(10);
 
 
         return response()->json($store);

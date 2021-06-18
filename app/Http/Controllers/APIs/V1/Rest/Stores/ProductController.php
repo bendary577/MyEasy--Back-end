@@ -23,7 +23,7 @@ class ProductController extends Controller
     /* -------------------------------------------get all products ------------------------------------------------ */
     public function getAll()
     {
-        $products = Product::all();
+        $products = Product::paginate(10);
         return response([
             'message'   => 'Return All Products',
             'data'      => $products
@@ -32,7 +32,7 @@ class ProductController extends Controller
 
     /* ------------------------------------- get products by store -------------------------------------- */
     public function get_product_store($id){
-        $products = Product::where('store_id', $id)->get();
+        $products = Product::where('store_id', $id)->paginate(10);
         if($products){
             return response([
                 'message'   => 'Return Products By Store',
@@ -117,7 +117,7 @@ class ProductController extends Controller
     }
 
     /* -------------------------------------delete product -------------------------------------- */
-    public function delete($id): \Illuminate\Http\JsonResponse
+    public function delete($id)
     {
         if(Product::where('id', $id)->exists()) {
             $product = Product::find($id);

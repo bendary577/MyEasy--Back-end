@@ -7,6 +7,7 @@ use App\Models\Cart;
 use App\Models\Product;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
+use Auth;
 
 class CartController extends Controller
 {
@@ -25,8 +26,8 @@ class CartController extends Controller
     {
         $arr = [];
         $total = 0;
-        // $id = Auth::user()->id;
-        $carts = Cart::where('user_id', '1')->get();
+
+        $carts = Cart::where('user_id', Auth::user()->id)->paginate(10);
 
         foreach ($carts as $cart) {
             $product = Product::find($cart->product_id);
@@ -37,7 +38,7 @@ class CartController extends Controller
         return response([
             'message'   => 'Your Cart',
             'data'      => $carts,
-            'products'      => $arr,
+            'products'  => $arr,
             'total'     => $total
         ], 200);
     }
@@ -64,7 +65,7 @@ class CartController extends Controller
         }
         
         $cart = Cart::create([
-            'user_id'   => '1', // Auth
+            'user_id'   => Auth::user()->id,
             'product_id'=> $product->id,
             'quantity'  => 1,
             'price'     => $product->price,

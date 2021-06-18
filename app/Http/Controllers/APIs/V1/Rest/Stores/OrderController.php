@@ -15,6 +15,7 @@ use App\Models\Product;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Event;
 use Illuminate\Support\Facades\Validator;
+use Auth;
 
 class OrderController extends Controller
 {
@@ -34,8 +35,7 @@ class OrderController extends Controller
     {
         $arr = [];
         
-        // Auth::user()->id
-        $orders = Order::where('user_id', '1')->get();
+        $orders = Order::where('user_id', Auth::user()->id)->paginate(10);
         
         foreach($orders as $order){
             array_push($arr, [
@@ -78,7 +78,7 @@ class OrderController extends Controller
         $tot = 0;
         
         // Auth::user()->id
-        $cart = Cart::where('user_id', '1')->get();
+        $cart = Cart::where('user_id', Auth::user()->id)->get();
         // return $cart;
         if(count($cart) === 0){
             return response(['message' => 'Cart Is Empty']);

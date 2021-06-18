@@ -20,7 +20,15 @@ class CategoryController extends Controller
 
     public function getAll()
     {
-        $categories = Category::all();
+        $categories = Category::paginate(10);
+        return response([
+            'message'   => 'success returned categories',
+            'data'      => $categories,
+        ], 200);
+    }
+
+    public function category_store(){
+        $categories = Category::with('store')->paginate(10);
         return response([
             'message'   => 'success returned categories',
             'data'      => $categories,
@@ -29,7 +37,6 @@ class CategoryController extends Controller
 
     public function create(Request $request)
     {
-        // return 0;
         $data = $request->all();
         $validator = Validator::make($data, [
             'name' => 'required|max:255|unique:categories',
@@ -77,9 +84,9 @@ class CategoryController extends Controller
         if(Category::where('id', $id)->exists()) {
             $category = Category::find($id);
             $category->delete();
-            return response()->json(["message" => "Category record deleted"], 202);
+            return response(["message" => "Category record deleted"], 202);
           } else {
-            return response()->json(["message" => "Category not found"], 404);
+            return response(["message" => "Category not found"], 404);
           }
     }
 }
