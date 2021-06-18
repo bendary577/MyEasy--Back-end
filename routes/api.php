@@ -3,6 +3,7 @@
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Models\Store;
+// use Auth;
 /*
 |--------------------------------------------------------------------------
 | API Routes
@@ -13,6 +14,10 @@ use App\Models\Store;
 | is assigned the "api" middleware group. Enjoy building your API!
 |
 */
+
+Route::middleware('auth:api')->get('/usera', function (Request $request) {
+    return Auth::user();
+});
 
 //------------------------ public apis --------------------------
 Route::group(['middleware' => ['cors', 'json.response']], function () {
@@ -87,7 +92,8 @@ Route::group(['middleware' => ['cors', 'json.response']], function () {
     /* ---------------------- products endpoint --------------------- */
     Route::group(['prefix'=>'product'], function () {
         Route::get('/', 'Rest\Stores\ProductController@getAll');                      //http://127.0.0.1:8000/api/products/
-        Route::get('/{id}', 'Rest\Stores\ProductController@getOne');                  //http://127.0.0.1:8000/api/products/1
+        Route::get('/{id}', 'Rest\Stores\ProductController@getOne');                 //http://127.0.0.1:8000/api/products/1
+        Route::get('/store/{id}', 'Rest\Stores\ProductController@get_product_store');                 //http://127.0.0.1:8000/api/products/1
         Route::post('/', 'Rest\Stores\ProductController@create');                     //http://127.0.0.1:8000/api/products/
         Route::post('/{id}', 'Rest\Stores\ProductController@update');                  //http://127.0.0.1:8000/api/products/1
         Route::post('/delete/{id}', 'Rest\Stores\ProductController@delete');               //http://127.0.0.1:8000/api/products/1
@@ -103,21 +109,22 @@ Route::group(['middleware' => ['cors', 'json.response']], function () {
     });
 
     /* ---------------------- invoices endpoint --------------------- */
-    Route::group(['prefix'=>'invoices'], function () {
+    Route::group(['prefix'=>'invoice'], function () {
         Route::get('/', 'Rest\Stores\InvoiceController@getAll');                    //http://127.0.0.1:8000/api/invoices/
+        Route::get('/user', 'Rest\Stores\InvoiceController@get_invoice_user');                    //http://127.0.0.1:8000/api/invoices/
         Route::get('/{id}', 'Rest\Stores\InvoiceController@getOne');                //http://127.0.0.1:8000/api/invoices/1
         Route::post('/', 'Rest\Stores\InvoiceController@create');                   //http://127.0.0.1:8000/api/invoices/
-        Route::put('/{id}', 'Rest\Stores\InvoiceController@update');                //http://127.0.0.1:8000/api/invoices/1
-        Route::delete('/{id}', 'Rest\Stores\InvoiceController@delete');             //http://127.0.0.1:8000/api/invoices/1
+        Route::post('/{id}', 'Rest\Stores\InvoiceController@update');                //http://127.0.0.1:8000/api/invoices/1
+        Route::post('/delete/{id}', 'Rest\Stores\InvoiceController@delete');             //http://127.0.0.1:8000/api/invoices/1
     });
 
     /* ---------------------- orders endpoint --------------------- */
-    Route::group(['prefix'=>'orders'], function () {
+    Route::group(['prefix'=>'order'], function () {
         Route::get('/', 'Rest\Stores\OrderController@getAll');                      //http://127.0.0.1:8000/api/orders/
-        Route::get('/{id}', 'Rest\Stores\OrderController@getOne');                  //http://127.0.0.1:8000/api/orders/1
+        Route::get('/{id}', 'Rest\Stores\OrderController@get_order');                  //http://127.0.0.1:8000/api/orders/1
         Route::post('/', 'Rest\Stores\OrderController@create');                     //http://127.0.0.1:8000/api/orders/
-        Route::put('/{id}', 'Rest\Stores\OrderController@update');                  //http://127.0.0.1:8000/api/orders/1
-        Route::delete('/{id}', 'Rest\Stores\OrderController@delete');               //http://127.0.0.1:8000/api/orders/1
+        // Route::put('/{id}', 'Rest\Stores\OrderController@update');                  //http://127.0.0.1:8000/api/orders/1
+        Route::post('/delete/{id}', 'Rest\Stores\OrderController@delete');               //http://127.0.0.1:8000/api/orders/1
     });
 
     /* ---------------------- Categories endpoint --------------------- */
@@ -133,8 +140,14 @@ Route::group(['middleware' => ['cors', 'json.response']], function () {
     Route::group(['prefix'=>'cart'], function () {
         Route::get('/', 'Rest\Accounts\CartController@getAll');                      //http://127.0.0.1:8000/api/Cart/
         Route::post('/', 'Rest\Accounts\CartController@create');                     //http://127.0.0.1:8000/api/Cart/
-        Route::put('/{id}', 'Rest\Accounts\CartController@update');                  //http://127.0.0.1:8000/api/Cart/1
-        Route::delete('/{id}', 'Rest\Accounts\CartController@delete');               //http://127.0.0.1:8000/api/Cart/1
+        Route::post('/increase', 'Rest\Accounts\CartController@increase');                     //http://127.0.0.1:8000/api/Cart/
+        Route::post('/decrease', 'Rest\Accounts\CartController@decrease');                     //http://127.0.0.1:8000/api/Cart/
+        // Route::put('/{id}', 'Rest\Accounts\CartController@update');                  //http://127.0.0.1:8000/api/Cart/1
+        Route::post('/delete/{id}', 'Rest\Accounts\CartController@destroy');               //http://127.0.0.1:8000/api/Cart/1
+    });
+
+    Route::group(['prefix'=>'rating'], function () {
+        Route::post('/', 'Rest\Accounts\RatingController@create');                      //http://127.0.0.1:8000/api/Cart/
     });
 
     Route::post('/search', 'Search\SearchController@search');
@@ -150,10 +163,10 @@ Route::group([ 'middleware' => ['api'],'prefix' => 'user'], static function() {
     Route::post('/me', 'Auth\AuthenticationController@me');                    //http://127.0.0.1:8000/api/user/me
 });
 
-Route::group(['middleware' => 'jwt.verify'], static function(){
+Route::group(['middleware' => 'auth:api' /*jwt.verify*/], static function(){
     Route::post('/logout', 'Auth\AuthenticationController@logout');          //http://127.0.0.1:8000/api/user/logout
     Route::post('/refresh', 'Auth\AuthenticationController@refresh');        //http://127.0.0.1:8000/api/user/refresh
-    Route::get('/detail', 'Auth\AuthenticationController@detail');           //http://127.0.0.1:8000/api/user/details
+    Route::get('/details', 'Auth\AuthenticationController@detail');           //http://127.0.0.1:8000/api/user/details
 });
 
 

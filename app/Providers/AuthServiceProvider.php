@@ -27,13 +27,15 @@ class AuthServiceProvider extends ServiceProvider
     {
         $this->registerPolicies();
         //
+        /*
         if (! $this->app->routesAreCached()) {
             Passport::routes();
         }
-        Passport::hashClientSecrets();
+        */
+        // Passport::hashClientSecrets();
         //jwt access & refresh tokens expiration date
-        Passport::tokensExpireIn(Carbon::now()->addMinutes(60));
-        Passport::refreshTokensExpireIn(Carbon::now()->addMinutes(60));
-        Passport::personalAccessTokensExpireIn(now()->addMonths(6));
+        // Passport::tokensExpireIn(Carbon::now()->addMinutes(60));
+        // Passport::refreshTokensExpireIn(Carbon::now()->addMinutes(60));
+        // Passport::personalAccessTokensExpireIn(now()->addMonths(6));
     }
 }

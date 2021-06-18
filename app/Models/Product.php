@@ -5,12 +5,11 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Models\Store;
-use Laravel\Scout\Searchable;
 use Models\CustomerProfile;
 
 class Product extends Model
 {
-    use HasFactory, Searchable;
+    use HasFactory;
 
     protected $fillable = [
         'name',
@@ -53,6 +52,7 @@ class Product extends Model
         return 'products';
     }
 
+    /*
     public function toSearchableArray()
     {
         $array = $this->toArray();
@@ -63,5 +63,5 @@ class Product extends Model
         ];
         
         return $data;
-    }
+    }*/
 }

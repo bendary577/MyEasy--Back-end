@@ -2,35 +2,34 @@
 
 namespace App\Http\Controllers\APIs\V1\Auth;
 
+use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Str;
+use App\Http\Controllers\Controller;
+use Illuminate\Http\Request;
+use App\Models\User;
+use App\Models\AdminProfile;
+use App\Models\CustomerProfile;
+use App\Models\SellerProfile;
+use App\Models\CompanyProfile;
+/*
 use App\Events\MailActivateAccountRequestEvent;
 use App\Events\MailCompanyRegisteredVerificationEvent;
 use App\Events\MailPasswordResetSuccessEvent;
 use App\Events\MailResetPasswordRequestEvent;
 use App\Events\UserAccountActivatedEvent;
-use App\Http\Controllers\Controller;
-use App\Models\AdminProfile;
-use App\Models\CompanyProfile;
-use App\Models\CustomerProfile;
-use App\Models\PasswordReset;
-use App\Models\SellerProfile;
-use App\Models\User;
 use Carbon\Carbon;
 use GuzzleHttp\Client;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Event;
-use Illuminate\Support\Facades\Hash;
-use Illuminate\Support\Facades\Storage;
-use Illuminate\Support\Str;
-use Illuminate\Support\Facades\Validator;
 use Laravel\Passport\Client as OClient;
 use Laravolt\Avatar\Avatar;
 use Spatie\Permission\Models\Permission;
 use Spatie\Permission\Models\Role;
-
+*/
 class AuthenticationController extends Controller
 {
-
+    /*
     public $successCode = 200;
     public $createdCode = 201;
     public $unauthorizedCode = 401;
@@ -48,6 +47,7 @@ class AuthenticationController extends Controller
     public $customer_permissions = ['list categories', 'list stores','rate store', 'list products','rate product', 'create order',
                                     'create order','list orders','delete order', 'add to cart', 'list carts', 'edit cart',
                                     'remove from cart','create complaint', 'list complaints', 'edit complaint'];
+    */
 
     //----------------------------------- REGISTER -------------------------
     public function register(Request $request)
@@ -170,13 +170,9 @@ class AuthenticationController extends Controller
         {
             return response(['errors'=>$validator->errors()->all()], 422);
         }
-
         $user = User::where('email', $request->email)->first();
-        
         if ($user) {
             if (Hash::check($request->password, $user->password)) {
-                $oClient = OClient::where('password_client', 1)->first();
-                return $this->getTokenAndRefreshToken($oClient, request('email'), request('password'));
                 $token = $user->createToken('Laravel Password Grant Client')->accessToken;
                 $response = ['token' => $token];
                 return response($response, 200);
@@ -189,7 +185,34 @@ class AuthenticationController extends Controller
             return response($response, 422);
         }
 
-            
+
+        /*
+        $validator = Validator::make($request->all(), [
+            'email' => 'required|string|email|max:255',
+            'password' => 'required|string|min:6',
+        ]);
+        if ($validator->fails())
+        {
+            return response(['errors'=>$validator->errors()->all()], 422);
+        }
+
+        $user = User::where('email', $request->email)->first();
+        
+        if ($user) {
+            if (Hash::check($request->password, $user->password)) {
+                $token = $user->createToken('Laravel Password Grant Client')->accessToken;
+                $response = ['token' => $token];
+                return response($response, 200);
+                $oClient = OClient::where('password_client', 1)->first();
+                return $this->getTokenAndRefreshToken($oClient, request('email'), request('password'));
+            } else {
+                $response = ["message" => "Password mismatch"];
+                return response($response, 422);
+            }
+        } else {
+            $response = ["message" =>'User does not exist'];
+            return response($response, 422);
+        }*/
     }
 
     //--------------------------------------- LOGOUT ------------------------------
@@ -197,7 +220,7 @@ class AuthenticationController extends Controller
     public function logout (Request $request) {
         $token = $request->user()->token();
         $token->revoke();
-        return response()->json(['message' => 'You have been successfully logged out!'], $this->successCode);
+        return response()->json(['message' => 'You have been successfully logged out!'], 200);
     }
 
     //-------------------------------------- DETAILS ------------------------------

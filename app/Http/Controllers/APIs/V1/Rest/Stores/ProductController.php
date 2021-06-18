@@ -30,6 +30,19 @@ class ProductController extends Controller
         ], 200);
     }
 
+    /* ------------------------------------- get products by store -------------------------------------- */
+    public function get_product_store($id){
+        $products = Product::where('store_id', $id)->get();
+        if($products){
+            return response([
+                'message'   => 'Return Products By Store',
+                'data'      => $products
+            ], 200);
+        }else{
+            return response(['message' => 'No Products In This Store'],404);
+        }
+    }
+
     /* ------------------------------------- create a product -------------------------------------- */
     public function create(Request $request)
     {
@@ -53,8 +66,7 @@ class ProductController extends Controller
         $product->available_number  = $data['available_number'];
         $product->status            = $data['status'];
         $product->save();
-        /*
-        */
+        
         return response(['message' => 'Product Record Created'], 201);
         Product::create([
             'name'              => $data['name'],
@@ -65,6 +77,7 @@ class ProductController extends Controller
             'available_number'  => $data['available_number'],
             'status'            => $data['status']
         ]);
+
         return 0;
         return response(['message' => 'Product Record Created'], 201);
     }
@@ -73,10 +86,13 @@ class ProductController extends Controller
     public function getOne($id)
     {
         if (Product::where('id', $id)->exists()) {
-            $product = Product::where('id', $id)->get()->toJson();
-            return response($product, 200);
+            $product = Product::where('id', $id)->first();
+            return response([
+                'message'   => 'Return One Product',
+                'data'      => $product
+            ], 200);
         } else {
-            return response()->json(["message" => "Product not found"], 404);
+            return response(["message" => "Product not found"], 404);
         }
     }
 
@@ -94,9 +110,9 @@ class ProductController extends Controller
             $product->status = is_null($request->status) ? $product->status : $request->status;
             $product->save();
 
-            return response()->json(["message" => "Product updated successfully"], 200);
+            return response(["message" => "Product updated successfully"], 200);
         } else {
-            return response()->json(["message" => "Product not found"], 404);
+            return response(["message" => "Product not found"], 404);
         }
     }
 
@@ -110,11 +126,6 @@ class ProductController extends Controller
         } else {
             return response()->json(["message" => "Product not found"], 404);
         }
-    }
-
-    /* ------------------------------------ rate a product -------------------------------------- */
-    public function rate(User $user){
-
     }
 
 
