@@ -12,12 +12,23 @@ use Auth;
 class RatingController extends Controller
 {
 
-    public function getAll()
+    public function get_user_rating()
     {
-        $rating = Rating::get()->toJson();
-        return response($rating, 200);
+        $rating = Rating::where('user_id', Auth::user()->id)->get();
+        return response([
+            'message'   => 'User Ratings',
+            'data'      => $rating
+        ], 200);
     }
 
+    public function get_product_rating($id)
+    {
+        $rating = Rating::where('product_id', $id)->get();
+        return response([
+            'message'   => 'Product Ratings',
+            'data'      => $rating
+        ], 200);
+    }
 
     public function Create(Request $request)
     {
@@ -60,8 +71,7 @@ class RatingController extends Controller
         
         return response(["message" => "Rating record created"], 201);
     }
-
-
+    /*
     public function getOne($id)
     {
         if (Rating::where('id', $id)->exists()) {
@@ -71,7 +81,7 @@ class RatingController extends Controller
             return response()->json(["message" => "Rating not found"], 404);
         }
     }
-
+    */
     public function update(Request $request, $id)
     {
         if (Rating::where('id', $id)->exists()) {
