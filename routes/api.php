@@ -2,7 +2,7 @@
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
-use App\Models\Store;
+// use App\Models\Store;
 // use Auth;
 /*
 |--------------------------------------------------------------------------
@@ -101,11 +101,11 @@ Route::group(['middleware' => ['cors', 'json.response']], function () {
 
     /* ---------------------- stores endpoint --------------------- */
     Route::group(['prefix' => 'store'], function () {
-        Route::get('/', 'Rest\Stores\StoreController@getAll');                      //http://127.0.0.1:8000/api/stores/
-        Route::get('/{id}', 'Rest\Stores\StoreController@getOne');                  //http://127.0.0.1:8000/api/stores/1
-        Route::post('/', 'Rest\Stores\StoreController@create');                     //http://127.0.0.1:8000/api/stores/
-        Route::post('/{id}', 'Rest\Stores\StoreController@update');                  //http://127.0.0.1:8000/api/stores/1
-        Route::post('/delete/{id}', 'Rest\Stores\StoreController@delete');               //http://127.0.0.1:8000/api/stores/1
+        Route::get('/', 'Rest\Stores\StoreController@getAll');                          //http://127.0.0.1:8000/api/stores/
+        Route::get('/{id}', 'Rest\Stores\StoreController@getOne');                      //http://127.0.0.1:8000/api/stores/1
+        Route::post('/', 'Rest\Stores\StoreController@create');                         //http://127.0.0.1:8000/api/stores/
+        Route::post('/{id}', 'Rest\Stores\StoreController@update');                     //http://127.0.0.1:8000/api/stores/1
+        Route::post('/delete/{id}', 'Rest\Stores\StoreController@delete');              //http://127.0.0.1:8000/api/stores/1
     });
 
     /* ---------------------- invoices endpoint --------------------- */
